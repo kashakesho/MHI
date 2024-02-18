@@ -190,12 +190,12 @@ exports.authorize = async (req, res, next) => {
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   if (userD) {
-    res.json({ userD, message: "i am admin" });
+    res.json({ userD, message: "i am doctor" });
   } else if (userH) {
-    res.json({ userH, message: "i am admin" });
+    res.json({ userH, message: "i am hospital" });
   } else if (userA) {
     res.json({ userA, message: "i am admin" });
   } else if (userP) {
-    res.json({ userP, message: "i am admin" });
+    res.json({ userP, message: "i am patient" });
   }
 };
