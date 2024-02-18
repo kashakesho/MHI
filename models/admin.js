@@ -10,6 +10,10 @@ const adminSchema = new schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    default: "admin",
+  },
 });
 
 module.exports = mongoose.model("Admin", adminSchema);

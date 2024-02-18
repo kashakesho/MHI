@@ -18,6 +18,10 @@ const doctorSchema = new schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    default: "doctor",
+  },
 });
 
 module.exports = mongoose.model("Doctor", doctorSchema);

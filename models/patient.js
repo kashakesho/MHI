@@ -22,6 +22,10 @@ const patientSchema = new schema({
     type: Date,
     required: true,
   },
+  role: {
+    type: String,
+    default: "patient",
+  },
 });
 
 module.exports = mongoose.model("Patient", patientSchema);

@@ -105,8 +105,8 @@ exports.login = async (req, res, next) => {
     return next(error);
   } else {
     if (userA) {
-      const userr = await admin.findOne({ username });
-      if (userr.username === username && userr.password === password) {
+      const isCorectPassword = await bcrypt.compare(password, userA.password);
+      if (isCorectPassword) {
         token = jwt.sign(
           {
             email: userA.username,
@@ -119,10 +119,6 @@ exports.login = async (req, res, next) => {
         return res
           .status(200)
           .json({ token: token, userId: userA._id, message: "logged in" });
-      } else {
-        const error = new Error("اسم المستخدم او كلمة السر خطأ");
-        error.statusCode = 400;
-        return next(error);
       }
     } else {
       if (userD) {
@@ -190,12 +186,16 @@ exports.authorize = async (req, res, next) => {
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   if (userD) {
-    res.json({ userD, message: "i am admin" });
+    res.json({ userD, message: "doctor" });
   } else if (userH) {
-    res.json({ userH, message: "i am admin" });
+    res.json({ userH, message: "hospital" });
   } else if (userA) {
-    res.json({ userA, message: "i am admin" });
+    res.json({ userA, message: "admin" });
   } else if (userP) {
-    res.json({ userP, message: "i am admin" });
+    res.json({ userP, message: "patient" });
   }
+
+  const error = new Error("cant authorize this user");
+  error.statusCode = 406;
+  return next(error);
 };
