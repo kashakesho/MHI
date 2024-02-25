@@ -186,13 +186,23 @@ exports.authorize = async (req, res, next) => {
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   if (userD) {
+<<<<<<< HEAD
     res.json({ userD, message: "doctor" });
   } else if (userH) {
     res.json({ userH, message: "hospital" });
+=======
+    res.json({ userD, message: "i am doctor" });
+  } else if (userH) {
+    res.json({ userH, message: "i am hospital" });
+>>>>>>> e4bf69b0dea63248463ae8966ccf975aa9a76090
   } else if (userA) {
     res.json({ userA, message: "admin" });
   } else if (userP) {
+<<<<<<< HEAD
     res.json({ userP, message: "patient" });
+=======
+    res.json({ userP, message: "i am patient" });
+>>>>>>> e4bf69b0dea63248463ae8966ccf975aa9a76090
   }
 
   const error = new Error("cant authorize this user");
