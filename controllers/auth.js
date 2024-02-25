@@ -193,9 +193,9 @@ exports.authorize = async (req, res, next) => {
     res.json({ userA, message: "admin" });
   } else if (userP) {
     res.json({ userP, message: "patient" });
+  } else {
+    const error = new Error("cant authorize this user");
+    error.statusCode = 406;
+    return next(error);
   }
-
-  const error = new Error("cant authorize this user");
-  error.statusCode = 406;
-  return next(error);
 };
