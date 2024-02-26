@@ -118,7 +118,7 @@ exports.login = async (req, res, next) => {
 
         return res
           .status(200)
-          .json({ token: token, userId: userA._id, message: "logged in" });
+          .json({ token: token, userId: userA._id, role: userA.role });
       }
     } else {
       if (userD) {
@@ -135,7 +135,7 @@ exports.login = async (req, res, next) => {
 
           return res
             .status(200)
-            .json({ token: token, userId: userD._id, message: "logged in" });
+            .json({ token: token, userId: userD._id, role: userD.role });
         }
       } else if (userP) {
         const isCorectPassword = await bcrypt.compare(password, userP.password);
@@ -151,7 +151,7 @@ exports.login = async (req, res, next) => {
 
           return res
             .status(200)
-            .json({ token: token, userId: userP._id, message: "logged in" });
+            .json({ token: token, userId: userP._id, role: userP.role });
         }
       } else if (userH) {
         const isCorectPassword = await bcrypt.compare(password, userH.password);
@@ -167,7 +167,7 @@ exports.login = async (req, res, next) => {
 
           return res
             .status(200)
-            .json({ token: token, userId: userH._id, message: "logged in" });
+            .json({ token: token, userId: userH._id, role: userH.role });
         }
       }
 
