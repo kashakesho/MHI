@@ -116,9 +116,7 @@ exports.login = async (req, res, next) => {
           { expiresIn: "24h" }
         );
 
-        return res
-          .status(200)
-          .json({ token: token, userId: userA._id, role: userA.role });
+        return res.status(200).json({ token: token, user: userA });
       }
     } else {
       if (userD) {
@@ -133,9 +131,7 @@ exports.login = async (req, res, next) => {
             { expiresIn: "24h" }
           );
 
-          return res
-            .status(200)
-            .json({ token: token, userId: userD._id, role: userD.role });
+          return res.status(200).json({ token: token, user: userD });
         }
       } else if (userP) {
         const isCorectPassword = await bcrypt.compare(password, userP.password);
@@ -149,9 +145,7 @@ exports.login = async (req, res, next) => {
             { expiresIn: "24h" }
           );
 
-          return res
-            .status(200)
-            .json({ token: token, userId: userP._id, role: userP.role });
+          return res.status(200).json({ token: token, user: userP });
         }
       } else if (userH) {
         const isCorectPassword = await bcrypt.compare(password, userH.password);
@@ -165,9 +159,7 @@ exports.login = async (req, res, next) => {
             { expiresIn: "24h" }
           );
 
-          return res
-            .status(200)
-            .json({ token: token, userId: userH._id, role: userH.role });
+          return res.status(200).json({ token: token, user: userH });
         }
       }
 
