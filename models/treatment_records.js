@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
+const doctor = require("./doctor");
+const patient = require("./patient");
 const schema = mongoose.Schema;
 
 const recordSchema = new schema({
   date: {
-    timeStamp: true,
+    type: Date,
+    default: Date.now,
   },
 
   medicine: {
@@ -14,12 +17,11 @@ const recordSchema = new schema({
     type: String,
     required: true,
   },
-  doctorID: {
+  doctor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",
   },
-
-  patientID: {
+  patient: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Patient",
   },

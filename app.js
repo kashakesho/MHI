@@ -6,6 +6,8 @@ const authRoute = require("./routes/auth");
 
 const patientRoute = require("./routes/patient");
 
+const doctorRoute = require("./routes/doctor");
+
 const app = express();
 
 app.use((req, res, next) => {
@@ -24,9 +26,7 @@ app.use("/auth", authRoute);
 
 app.use("/patient", patientRoute);
 
-app.get("/test", (req, res, next) => {
-  res.json({ message: "success" });
-});
+app.use("/doctor", doctorRoute);
 
 app.use((error, req, res, next) => {
   console.log(error);
