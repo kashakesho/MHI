@@ -24,12 +24,17 @@ exports.setRecord = async (req, res, next) => {
   }
 };
 exports.getRecords = async (req, res, next) => {
-  const patient = req.body.patientID;
+  const patientID = req.body.patientID;
+  const doctorID = req.body.doctorID;
 
-  const user = await records.find({ patient });
+  const userR = await records
+    .find({ patient: patientID })
+    .populate({ path: "patient", select: ["username", "name", "birthday"] })
+    .find({ doctor: doctorID })
+    .populate({ path: "doctor", select: ["name", "specialize"] });
 
-  if (user) {
-    return res.json({ user });
+  if (userR) {
+    return res.json({ userR });
   }
 
   const error = new Error(" المريض غير موجود");
