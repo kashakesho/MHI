@@ -45,10 +45,9 @@ exports.appoint = async (req, res, next) => {
   const time = req.body.time;
   const patientID = req.body.patientID;
   const doctorID = req.body.doctorID;
-  const D = await book.findOne({ day });
   if (!day) {
     const error = new Error("برجاء ادخال اليوم ");
-    error.statusCode = 404;
+    error.statusCode = 400;
     return next(error);
   }
   if (!patientID) {
@@ -61,35 +60,15 @@ exports.appoint = async (req, res, next) => {
     error.statusCode = 400;
     return next(error);
   }
-  if (D) {
-    const T = await book.findOne({ time });
-    if (T) {
+
+  const doctor = doctors.findById({ doctorID });
+  const patient = patients.findById({ patientID });
+
+  if (doctor && patient) {
+    const D = await book.findOne({ doctorID, day, time });
+    if (D) {
       const error = new Error(" لا يمكن الحجز هذا اليوم");
-      error.statusCode = 404;
-      return next(error);
-    } else {
-      const doctor = doctors.findById({ doctorID });
-      const patient = patients.findById({ patientID });
-      if (!doctor && !patient) {
-        const error = new Error("not found");
-        error.statusCode = 404;
-        return next(error);
-      } else {
-        const theBook = await book.create({
-          day,
-          time,
-          patientID,
-          doctorID,
-        });
-        return res.json({ theBook });
-      }
-    }
-  } else if (!D) {
-    const doctor = doctors.findById({ doctorID });
-    const patient = patients.findById({ patientID });
-    if (!doctor && !patient) {
-      const error = new Error("not found");
-      error.statusCode = 404;
+      error.statusCode = 406;
       return next(error);
     } else {
       const theBook = await book.create({
@@ -100,9 +79,9 @@ exports.appoint = async (req, res, next) => {
       });
       return res.json({ theBook });
     }
+  } else {
+    const error = new Error("not found");
+    error.statusCode = 404;
+    return next(error);
   }
-
-  const error = new Error();
-  error.statusCode = 500;
-  return next(error);
 };
