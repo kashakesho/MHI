@@ -4,24 +4,21 @@ const schema = mongoose.Schema;
 const bookSchema = new schema({
   day: {
     type: Date,
-
     requred: true,
   },
-  payment: {
-    type: Number,
-    required: true,
+  time: {
+    type: String,
+    requred: true,
   },
   doctorID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",
-  },
-  hospitalID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hospital",
+    requred: true,
   },
   patientID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Patient",
+    requred: true,
   },
 });
 

@@ -1,5 +1,7 @@
 const doctors = require("../models/doctor");
 const patients = require("../models/patient");
+
+const hospital = require("../models/hospital");
 const book = require("../models/booking");
 
 exports.searchDoctor = async (req, res, next) => {
@@ -24,7 +26,10 @@ exports.searchDoctor = async (req, res, next) => {
   }
 };
 exports.getDoctors = async (req, res, next) => {
-  const userD = await doctors.find();
+  const userD = await doctors.find().populate({
+    path: "hospitalID",
+    select: ["name", "address"],
+  });
 
   if (userD) {
     return res.json({ userD });
@@ -37,30 +42,67 @@ exports.getDoctors = async (req, res, next) => {
 
 exports.appoint = async (req, res, next) => {
   const day = req.body.day;
-  const payment = req.body.payment;
+  const time = req.body.time;
   const patientID = req.body.patientID;
   const doctorID = req.body.doctorID;
-  const hospital = req.body.hospitalID;
   const D = await book.findOne({ day });
   if (!day) {
     const error = new Error("برجاء ادخال اليوم ");
     error.statusCode = 404;
     return next(error);
   }
-  if (D) {
-    const error = new Error(" لا يمكن الحجز هذا اليوم");
-    error.statusCode = 404;
+  if (!patientID) {
+    const error = new Error("please enter the patient ID");
+    error.statusCode = 400;
     return next(error);
-  } else if (!D) {
-    const doctor = doctors.find({ doctorID });
-    const patient = patients.find({ patientID });
-    const theBook = await book.create({
-      day,
-      payment,
-      patient,
-      doctor,
-      hospital,
-    });
-    return res.json({ theBook });
   }
+  if (!doctorID) {
+    const error = new Error("please enter the doctor ID");
+    error.statusCode = 400;
+    return next(error);
+  }
+  if (D) {
+    const T = await book.findOne({ time });
+    if (T) {
+      const error = new Error(" لا يمكن الحجز هذا اليوم");
+      error.statusCode = 404;
+      return next(error);
+    } else {
+      const doctor = doctors.findById({ doctorID });
+      const patient = patients.findById({ patientID });
+      if (!doctor && !patient) {
+        const error = new Error("not found");
+        error.statusCode = 404;
+        return next(error);
+      } else {
+        const theBook = await book.create({
+          day,
+          time,
+          patientID,
+          doctorID,
+        });
+        return res.json({ theBook });
+      }
+    }
+  } else if (!D) {
+    const doctor = doctors.findById({ doctorID });
+    const patient = patients.findById({ patientID });
+    if (!doctor && !patient) {
+      const error = new Error("not found");
+      error.statusCode = 404;
+      return next(error);
+    } else {
+      const theBook = await book.create({
+        day,
+        time,
+        patientID,
+        doctorID,
+      });
+      return res.json({ theBook });
+    }
+  }
+
+  const error = new Error();
+  error.statusCode = 500;
+  return next(error);
 };

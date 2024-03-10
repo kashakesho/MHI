@@ -1,14 +1,18 @@
 const doctor = require("../models/doctor");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
 const { validationResult } = require("express-validator");
-
 const jwt = require("jsonwebtoken");
 const patient = require("../models/patient");
 const hospital = require("../models/hospital");
 const admin = require("../models/admin");
+/* 
+
+
+
+*/
 exports.signupDoctor = async (req, res, next) => {
   const username = req.body.username;
-
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
   const userH = await hospital.findOne({ username });
@@ -18,21 +22,37 @@ exports.signupDoctor = async (req, res, next) => {
     let password = req.body.password;
     const name = req.body.name;
     const specialize = req.body.specialize;
+    const hospitalID = req.body.hospitalID;
+    const imageBuffer = await fs.promises.readFile(req.file.path);
+    const H = hospital.findById({ hospitalID });
+    if (H) {
+      password = await bcrypt.hash(password, 10);
 
-    password = await bcrypt.hash(password, 10);
-
-    const newUser = await doctor.create({
-      username,
-      password,
-      name,
-      specialize,
-    });
-    return res.status(200).json({ message: "Doctor signup successful" });
+      const newUser = await doctor.create({
+        username,
+        password,
+        name,
+        specialize,
+        hospitalID,
+        image: {
+          data: imageBuffer,
+          contentType: req.file.mimetype,
+        },
+      });
+      return res.status(200).json({ message: "Doctor signup successful" });
+    }
+  } else {
+    const error = new Error("لا يمكن ادخال اسم المستخدم");
+    error.statusCode = 400;
+    return next(error);
   }
-  const error = new Error("لا يمكن ادخال اسم المستخدم");
-  error.statusCode = 400;
-  return next(error);
 };
+/* 
+
+
+
+
+*/
 
 exports.signupPatient = async (req, res, next) => {
   const username = req.body.username;
@@ -63,6 +83,12 @@ exports.signupPatient = async (req, res, next) => {
   error.statusCode = 400;
   return next(error);
 };
+/* 
+
+
+
+
+*/
 exports.signupHospital = async (req, res, next) => {
   const username = req.body.username;
 
@@ -91,6 +117,12 @@ exports.signupHospital = async (req, res, next) => {
   error.statusCode = 400;
   return next(error);
 };
+/* 
+
+
+
+
+*/
 exports.login = async (req, res, next) => {
   let token;
   const username = req.body.username;
@@ -169,6 +201,12 @@ exports.login = async (req, res, next) => {
     }
   }
 };
+/* 
+
+
+
+
+*/
 
 exports.authorize = async (req, res, next) => {
   const username = req.body.username;

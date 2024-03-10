@@ -26,8 +26,14 @@ exports.setRecord = async (req, res, next) => {
 exports.getRecords = async (req, res, next) => {
   const userR = await records
     .find()
-    .populate({ path: "patient", select: ["username", "name", "birthday"] })
-    .populate({ path: "doctor", select: ["name", "specialize"] });
+    .populate({
+      path: "patient",
+      select: ["username", "name", "birthday"],
+    })
+    .populate({
+      path: "doctor",
+      select: ["name", "specialize", "hospitalID"],
+    });
 
   if (userR) {
     return res.json({ userR });

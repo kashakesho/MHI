@@ -18,6 +18,14 @@ const doctorSchema = new schema({
     type: String,
     required: true,
   },
+  hospitalID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Hospital",
+  },
+  image: {
+    data: Buffer,
+    contentType: String,
+  },
   role: {
     type: String,
     default: "doctor",
