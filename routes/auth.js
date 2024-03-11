@@ -9,13 +9,13 @@ const upload = multer({ dest: "uploads/" });
 
 const router = express.Router();
 
-router.post("/signupDoctor", authController.signupDoctor);
-
 router.post(
-  "/signupPatient",
+  "/signupDoctor",
   upload.single("image"),
-  authController.signupPatient
+  authController.signupDoctor
 );
+
+router.post("/signupPatient", authController.signupPatient);
 
 router.post("/signupHospital", authController.signupHospital);
 
