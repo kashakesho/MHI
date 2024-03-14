@@ -21,9 +21,9 @@ exports.signupDoctor = async (req, res, next) => {
   if (!userD && !userP && !userH && !userA) {
     let password = req.body.password;
     const name = req.body.name;
+    const image = req.file.path;
     const specialize = req.body.specialize;
     const hospitalID = req.body.hospitalID;
-    const imageBuffer = await fs.promises.readFile(req.file.path);
     const H = hospital.findById({ hospitalID });
     if (H) {
       password = await bcrypt.hash(password, 10);
@@ -32,12 +32,9 @@ exports.signupDoctor = async (req, res, next) => {
         username,
         password,
         name,
+        image,
         specialize,
         hospitalID,
-        image: {
-          data: imageBuffer,
-          contentType: req.file.mimetype,
-        },
       });
       return res.status(200).json({ message: "Doctor signup successful" });
     }
