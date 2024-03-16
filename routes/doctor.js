@@ -10,4 +10,8 @@ router.post("/createRecord", doctorController.setRecord);
 
 router.get("/showRecords", doctorController.getRecords);
 
+router.get("/showBooking/:id", doctorController.getBooks);
+
+router.get("/getPatientRecord/:id", doctorController.getPatientRecords);
+
 module.exports = router;

@@ -4,7 +4,7 @@ const cors = require("cors");
 
 const mongoose = require("mongoose");
 
-const multer = require("multer");
+//const multer = require("multer");
 
 const authRoute = require("./routes/auth");
 
@@ -13,6 +13,7 @@ const patientRoute = require("./routes/patient");
 const doctorRoute = require("./routes/doctor");
 
 const app = express();
+/*
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "images");
@@ -38,8 +39,9 @@ app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
 
-app.use(cors());
+*/
 
+app.use(cors());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(

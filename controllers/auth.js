@@ -21,7 +21,7 @@ exports.signupDoctor = async (req, res, next) => {
   if (!userD && !userP && !userH && !userA) {
     let password = req.body.password;
     const name = req.body.name;
-    const image = req.file.path;
+    //const image = req.file.path;
     const specialize = req.body.specialize;
     const hospitalID = req.body.hospitalID;
     const H = hospital.findById({ hospitalID });
@@ -32,7 +32,7 @@ exports.signupDoctor = async (req, res, next) => {
         username,
         password,
         name,
-        image,
+        //  image,
         specialize,
         hospitalID,
       });

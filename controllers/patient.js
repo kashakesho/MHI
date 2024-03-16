@@ -61,8 +61,8 @@ exports.appoint = async (req, res, next) => {
     return next(error);
   }
 
-  const doctor = doctors.findById({ doctorID });
-  const patient = patients.findById({ patientID });
+  const doctor = await doctors.findById({ _id: doctorID });
+  const patient = await patients.findById({ _id: patientID });
 
   if (doctor && patient) {
     const D = await book.findOne({ doctorID, day, time });
