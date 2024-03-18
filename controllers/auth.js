@@ -226,3 +226,14 @@ exports.authorize = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.getHospitals = async (req, res, next) => {
+  const allHospitals = await hospital.find();
+  if (allHospitals) {
+    res.json({ allHospitals });
+  }
+
+  const error = new Error("hospital not found");
+  error.statusCode = 404;
+  return next(error);
+};

@@ -15,4 +15,6 @@ router.post("/login", authController.login);
 
 router.get("/author", authController.authorize);
 
+router.get("/getHospitals", authController.getHospitals);
+
 module.exports = router;
