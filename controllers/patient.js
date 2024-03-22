@@ -3,6 +3,7 @@ const patients = require("../models/patient");
 
 const hospital = require("../models/hospital");
 const book = require("../models/booking");
+const medicine = require("../models/medicine");
 
 exports.searchDoctor = async (req, res, next) => {
   const name = req.body.name;
@@ -90,4 +91,27 @@ exports.appoint = async (req, res, next) => {
     error.statusCode = 404;
     return next(error);
   }
+};
+
+exports.getMedicines = async (req, res, next) => {
+  const findMedicines = await medicine.find();
+  if (findMedicines) {
+    res.json({ findMedicines });
+  }
+
+  const error = new Error("not found");
+  error.statusCode = 404;
+  return next(error);
+};
+
+exports.searchMedicine = async (req, res, next) => {
+  const name = req.body.name;
+  const searchName = await medicine.findOne({ name });
+  if (searchName) {
+    res.json({ searchName });
+  }
+
+  const error = new Error("not found");
+  error.statusCode = 404;
+  return next(error);
 };

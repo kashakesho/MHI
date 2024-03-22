@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const patient = require("../models/patient");
 const hospital = require("../models/hospital");
 const admin = require("../models/admin");
+const medicine = require("../models/medicine");
 /* 
 
 
@@ -235,5 +236,33 @@ exports.getHospitals = async (req, res, next) => {
 
   const error = new Error("hospital not found");
   error.statusCode = 404;
+  return next(error);
+};
+/*
+
+
+
+
+
+*/
+exports.createMedicine = async (req, res, next) => {
+  const name = req.body.name;
+  const description = req.body.description;
+  const howToUse = req.body.howToUse;
+  const tradeMark = req.body.tradeMark;
+  const components = req.body.components;
+  const searchName = await medicine.findOne({ name });
+  if (!searchName) {
+    const saveMedicine = await medicine.create({
+      name,
+      description,
+      howToUse,
+      tradeMark,
+      components,
+    });
+    res.json(saveMedicine);
+  }
+  const error = new Error("the medicine is already exist");
+  error.statusCode = 422;
   return next(error);
 };

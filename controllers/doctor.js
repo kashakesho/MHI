@@ -1,6 +1,7 @@
 const records = require("../models/treatment_records");
 const Patients = require("../models/patient");
 const bookings = require("../models/booking");
+const hospitals = require("../models/hospital");
 
 const Doctors = require("../models/doctor");
 exports.setRecord = async (req, res, next) => {

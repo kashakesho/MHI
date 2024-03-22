@@ -17,4 +17,6 @@ router.get("/author", authController.authorize);
 
 router.get("/getHospitals", authController.getHospitals);
 
+router.post("/createMedicine", authController.createMedicine);
+
 module.exports = router;

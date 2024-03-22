@@ -10,4 +10,8 @@ router.post("/book", patientController.appoint);
 
 router.get("/getDoctors", patientController.getDoctors);
 
+router.get("/getMedicines", patientController.getMedicines);
+
+router.post("/searchMedicine", patientController.searchMedicine);
+
 module.exports = router;
