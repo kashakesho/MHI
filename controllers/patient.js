@@ -4,7 +4,11 @@ const patients = require("../models/patient");
 const hospital = require("../models/hospital");
 const book = require("../models/booking");
 const medicine = require("../models/medicine");
+/* 
 
+
+
+*/
 exports.searchDoctor = async (req, res, next) => {
   const name = req.body.name;
   const specialize = req.body.specialize;
@@ -32,6 +36,11 @@ exports.searchDoctor = async (req, res, next) => {
     return next(error);
   }
 };
+/* 
+
+
+
+*/
 exports.getDoctors = async (req, res, next) => {
   const userD = await doctors.find().populate({
     path: "hospitalID",
@@ -46,7 +55,11 @@ exports.getDoctors = async (req, res, next) => {
   error.statusCode = 404;
   return next(error);
 };
+/* 
 
+
+
+*/
 exports.appoint = async (req, res, next) => {
   const day = req.body.day;
   const time = req.body.time;
@@ -92,7 +105,11 @@ exports.appoint = async (req, res, next) => {
     return next(error);
   }
 };
+/* 
 
+
+
+*/
 exports.getMedicines = async (req, res, next) => {
   const findMedicines = await medicine.find();
   if (findMedicines) {
@@ -103,37 +120,59 @@ exports.getMedicines = async (req, res, next) => {
   error.statusCode = 404;
   return next(error);
 };
+/* 
 
+
+
+*/
 exports.searchMedicine = async (req, res, next) => {
   const name = req.body.name;
-  const searchName = await medicine.find({ name });
-  if (searchName) {
-    res.json({ searchName });
+  if (!name) {
+    const error = new Error("please add the medicine name");
+    error.statusCode = 422;
+    return next(error);
   }
-
-  const error = new Error("not found");
-  error.statusCode = 404;
-  return next(error);
+  const searchName = await medicine.find({ name });
+  if (searchName.length > 0) {
+    res.json({ searchName });
+  } else {
+    const error = new Error("not found");
+    error.statusCode = 404;
+    return next(error);
+  }
 };
+/* 
+
+
+
+*/
 exports.getHospitals = async (req, res, next) => {
   const findHospitals = await hospital.find();
   if (findHospitals) {
     res.json({ findHospitals });
   }
-
   const error = new Error("not found");
   error.statusCode = 404;
   return next(error);
 };
+/* 
 
+
+
+*/
 exports.searchHospital = async (req, res, next) => {
   const hospitalID = req.body.hospitalID;
-  const searchName = await doctors.find({ hospitalID });
-  if (searchName) {
-    res.json({ searchName });
+  if (!hospitalID) {
+    const error = new Error("please add the hospital ID");
+    error.statusCode = 422;
+    return next(error);
   }
-
-  const error = new Error("not found");
-  error.statusCode = 404;
-  return next(error);
+  const searchName = await doctors.find({ hospitalID });
+  if (searchName.length > 0) {
+    res.json({ searchName });
+  } else {
+    const error = new Error("not found");
+    error.statusCode = 404;
+    return next(error);
+  }
 };
