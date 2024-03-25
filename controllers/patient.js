@@ -106,7 +106,29 @@ exports.getMedicines = async (req, res, next) => {
 
 exports.searchMedicine = async (req, res, next) => {
   const name = req.body.name;
-  const searchName = await medicine.findOne({ name });
+  const searchName = await medicine.find({ name });
+  if (searchName) {
+    res.json({ searchName });
+  }
+
+  const error = new Error("not found");
+  error.statusCode = 404;
+  return next(error);
+};
+exports.getHospitals = async (req, res, next) => {
+  const findHospitals = await hospital.find();
+  if (findHospitals) {
+    res.json({ findHospitals });
+  }
+
+  const error = new Error("not found");
+  error.statusCode = 404;
+  return next(error);
+};
+
+exports.searchHospital = async (req, res, next) => {
+  const hospitalID = req.body.hospitalID;
+  const searchName = await doctors.find({ hospitalID });
   if (searchName) {
     res.json({ searchName });
   }

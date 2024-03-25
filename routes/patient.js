@@ -14,4 +14,8 @@ router.get("/getMedicines", patientController.getMedicines);
 
 router.post("/searchMedicine", patientController.searchMedicine);
 
+router.post("/searchHospital", patientController.searchHospital);
+
+router.get("/getHospitals", patientController.getHospitals);
+
 module.exports = router;
