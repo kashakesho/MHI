@@ -10,6 +10,11 @@ const bookSchema = new schema({
     type: String,
     requred: true,
   },
+  status: {
+    type: String,
+    enum: ["Done", "Cancelled", "Waiting"],
+    default: "Waiting",
+  },
   doctorID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",

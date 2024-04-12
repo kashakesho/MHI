@@ -74,6 +74,63 @@ exports.getBooks = async (req, res, next) => {
   }
 };
 
+exports.bookCounter = async (req, res, next) => {
+  const doctor = req.params.id;
+  const getWaitingBooks = await bookings.find({
+    doctorID: doctor,
+    status: "Waiting",
+  });
+  const getDoneBooks = await bookings.find({
+    doctorID: doctor,
+    status: "Done",
+  });
+  const getCancelledBooks = await bookings.find({
+    doctorID: doctor,
+    status: "Cancelled",
+  });
+  if (doctor) {
+    res.json({
+      waitingCounter: getWaitingBooks.length,
+      doneCounter: getDoneBooks.length,
+      cancelledCounter: getCancelledBooks.length,
+    });
+  }
+
+  const error = new Error("No books found for the specified doctor");
+  error.statusCode = 404;
+  return next(error);
+};
+
+exports.bookStatus = async (req, res, next) => {
+  const bookingID = req.body.bookingID;
+  const bookingStatus = req.body.status;
+  if (!bookingID) {
+    const error = new Error("booking not found");
+    error.statusCode = 404;
+    return next(error);
+  }
+
+  if (bookingStatus === "Done") {
+    const founder = await bookings.findByIdAndUpdate(
+      { _id: bookingID },
+      { $set: { status: bookingStatus } },
+      { new: true }
+    );
+    res.json({ founder });
+  } else if (bookingStatus === "Cancelled") {
+    const founder = await bookings.findByIdAndUpdate(
+      { _id: bookingID },
+      { $set: { status: bookingStatus } },
+      { new: true }
+    );
+    res.json({ founder });
+  }
+
+  const error = new Error("please try again later");
+  error.statusCode = 422;
+  return next(error);
+};
+
 exports.getPatientRecords = async (req, res, next) => {
   const patient = req.params.id;
   const userR = await records
