@@ -59,7 +59,11 @@ exports.getBooks = async (req, res, next) => {
   nextDay.setHours(0, 0, 0, 0);
 
   const getbook = await bookings
-    .find({ doctorID: doctor, day: { $gte: currentDate, $lt: nextDay } })
+    .find({
+      doctorID: doctor,
+      day: { $gte: currentDate, $lt: nextDay },
+      status: "Waiting",
+    })
     .populate({
       path: "patientID",
       select: ["username", "name", "birthday"],
