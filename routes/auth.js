@@ -11,6 +11,8 @@ router.post("/signupPatient", authController.signupPatient);
 
 router.post("/signupHospital", authController.signupHospital);
 
+router.post("/signupClinicDirector", authController.signupClinicsDirector);
+
 router.post("/login", authController.login);
 
 router.get("/author", authController.authorize);

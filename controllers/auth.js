@@ -7,6 +7,7 @@ const patient = require("../models/patient");
 const hospital = require("../models/hospital");
 const admin = require("../models/admin");
 const medicine = require("../models/medicine");
+const clinicsDirector = require("../models/clinicsDirector");
 /* 
 
 
@@ -18,8 +19,9 @@ exports.signupDoctor = async (req, res, next) => {
   const userP = await patient.findOne({ username });
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
+  const userC = await clinicsDirector.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA) {
+  if (!userD && !userP && !userH && !userA && !userC) {
     let password = req.body.password;
     const name = req.body.name;
     //const image = req.file.path;
@@ -51,6 +53,43 @@ exports.signupDoctor = async (req, res, next) => {
 
 
 */
+exports.signupClinicsDirector = async (req, res, next) => {
+  const username = req.body.username;
+  const userD = await doctor.findOne({ username });
+  const userP = await patient.findOne({ username });
+  const userH = await hospital.findOne({ username });
+  const userA = await admin.findOne({ username });
+  const userC = await clinicsDirector.findOne({ username });
+
+  if (!userD && !userP && !userH && !userA && !userC) {
+    let password = req.body.password;
+    const name = req.body.name;
+    //const image = req.file.path;
+    const hospitalID = req.body.hospitalID;
+    const H = hospital.findById({ hospitalID });
+    if (H) {
+      password = await bcrypt.hash(password, 10);
+
+      const newUser = await clinicsDirector.create({
+        username,
+        password,
+        name,
+        //  image,
+        hospitalID,
+      });
+      return res.status(200).json({ message: "director signup successful" });
+    }
+  } else {
+    const error = new Error("لا يمكن ادخال اسم المستخدم");
+    error.statusCode = 400;
+    return next(error);
+  }
+}; /* 
+
+
+
+
+*/
 
 exports.signupPatient = async (req, res, next) => {
   const username = req.body.username;
@@ -59,8 +98,9 @@ exports.signupPatient = async (req, res, next) => {
   const userP = await patient.findOne({ username });
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
+  const userC = await clinicsDirector.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA) {
+  if (!userD && !userP && !userH && !userA && !userC) {
     let password = req.body.password;
     const name = req.body.name;
     const address = req.body.address;
@@ -94,8 +134,9 @@ exports.signupHospital = async (req, res, next) => {
   const userP = await patient.findOne({ username });
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
+  const userC = await clinicsDirector.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA) {
+  if (!userD && !userP && !userH && !userA && !userC) {
     let password = req.body.password;
     const name = req.body.name;
     const address = req.body.address;
@@ -120,84 +161,51 @@ exports.signupHospital = async (req, res, next) => {
 
 
 
-*/
-exports.login = async (req, res, next) => {
-  let token;
-  const username = req.body.username;
-  const password = req.body.password;
+*/ exports.login = async (req, res, next) => {
+  const { username, password } = req.body;
+
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
-  if (!userD && !userP && !userH && !userA) {
-    const error = new Error("اسم المستخدم او كلمة السر خطأ");
+  const userC = await clinicsDirector.findOne({ username });
+
+  if (!userD && !userP && !userH && !userA && !userC) {
+    const error = new Error("Invalid username or password");
     error.statusCode = 400;
     return next(error);
-  } else {
-    if (userA) {
-      const isCorectPassword = await bcrypt.compare(password, userA.password);
-      if (isCorectPassword) {
-        token = jwt.sign(
-          {
-            email: userA.username,
-            userId: userA._id.toString(),
-          },
-          "somesupersecretsecret",
-          { expiresIn: "24h" }
-        );
-
-        return res.status(200).json({ token: token, user: userA });
-      }
-    } else {
-      if (userD) {
-        const isCorectPassword = await bcrypt.compare(password, userD.password);
-        if (isCorectPassword) {
-          token = jwt.sign(
-            {
-              email: userD.username,
-              userId: userD._id.toString(),
-            },
-            "somesupersecretsecret",
-            { expiresIn: "24h" }
-          );
-
-          return res.status(200).json({ token: token, user: userD });
-        }
-      } else if (userP) {
-        const isCorectPassword = await bcrypt.compare(password, userP.password);
-        if (isCorectPassword) {
-          token = jwt.sign(
-            {
-              email: userP.username,
-              userId: userP._id.toString(),
-            },
-            "somesupersecretsecret",
-            { expiresIn: "24h" }
-          );
-
-          return res.status(200).json({ token: token, user: userP });
-        }
-      } else if (userH) {
-        const isCorectPassword = await bcrypt.compare(password, userH.password);
-        if (isCorectPassword) {
-          token = jwt.sign(
-            {
-              email: userH.username,
-              userId: userH._id.toString(),
-            },
-            "somesupersecretsecret",
-            { expiresIn: "24h" }
-          );
-
-          return res.status(200).json({ token: token, user: userH });
-        }
-      }
-
-      const error = new Error("اسم المستخدم او كلمة السر خطأ");
-      error.statusCode = 400;
-      return next(error);
-    }
   }
+
+  let user;
+  if (userA) {
+    user = userA;
+  } else if (userD) {
+    user = userD;
+  } else if (userP) {
+    user = userP;
+  } else if (userH) {
+    user = userH;
+  } else if (userC) {
+    user = userC;
+  }
+
+  const isCorrectPassword = await bcrypt.compare(password, user.password);
+  if (!isCorrectPassword) {
+    const error = new Error("Invalid username or password");
+    error.statusCode = 400;
+    return next(error);
+  }
+
+  const token = jwt.sign(
+    {
+      email: user.username,
+      userId: user._id.toString(),
+    },
+    "your-secret-key-here",
+    { expiresIn: "24h" }
+  );
+
+  return res.status(200).json({ token, user });
 };
 /* 
 
