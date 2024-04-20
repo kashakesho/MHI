@@ -10,6 +10,8 @@ const authRoute = require("./routes/auth");
 
 const patientRoute = require("./routes/patient");
 
+const clinicsDirectorRoute = require("./routes/clinicsDirector");
+
 const doctorRoute = require("./routes/doctor");
 
 const app = express();
@@ -55,6 +57,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.use("/auth", authRoute);
+
+app.use("/clinicsDirector", clinicsDirectorRoute);
 
 app.use("/patient", patientRoute);
 

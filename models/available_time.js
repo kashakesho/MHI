@@ -6,16 +6,13 @@ const av_timeSchema = new schema({
     type: String,
     require: true,
   },
-  date: {
-    timeStamp: true,
+  time: {
+    type: [String],
+    require: true,
   },
   doctorID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",
-  },
-  hospitalID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hospital",
   },
 });
 
