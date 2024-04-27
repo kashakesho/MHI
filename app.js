@@ -14,6 +14,8 @@ const clinicsDirectorRoute = require("./routes/clinicsDirector");
 
 const doctorRoute = require("./routes/doctor");
 
+const hospitalAdminRoute = require("./routes/hospital_admin");
+
 const app = express();
 /*
 const fileStorage = multer.diskStorage({
@@ -63,6 +65,8 @@ app.use("/clinicsDirector", clinicsDirectorRoute);
 app.use("/patient", patientRoute);
 
 app.use("/doctor", doctorRoute);
+
+app.use("/hospitalAdmin", hospitalAdminRoute);
 
 app.use((error, req, res, next) => {
   console.log(error);

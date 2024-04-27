@@ -8,60 +8,22 @@ const hospital = require("../models/hospital");
 const admin = require("../models/admin");
 const medicine = require("../models/medicine");
 const clinicsDirector = require("../models/clinicsDirector");
+const hospitalAdmin = require("../models/hospital_admin");
 /* 
 
 
 
 */
-exports.signupDoctor = async (req, res, next) => {
+exports.signupHospitalAdmin = async (req, res, next) => {
   const username = req.body.username;
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
+  const userHa = await hospitalAdmin.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC) {
-    let password = req.body.password;
-    const name = req.body.name;
-    //const image = req.file.path;
-    const specialize = req.body.specialize;
-    const hospitalID = req.body.hospitalID;
-    const H = hospital.findById({ hospitalID });
-    if (H) {
-      password = await bcrypt.hash(password, 10);
-
-      const newUser = await doctor.create({
-        username,
-        password,
-        name,
-        //  image,
-        specialize,
-        hospitalID,
-      });
-      return res.status(200).json({ message: "Doctor signup successful" });
-    }
-  } else {
-    const error = new Error("لا يمكن ادخال اسم المستخدم");
-    error.statusCode = 400;
-    return next(error);
-  }
-};
-/* 
-
-
-
-
-*/
-exports.signupClinicsDirector = async (req, res, next) => {
-  const username = req.body.username;
-  const userD = await doctor.findOne({ username });
-  const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
-  const userA = await admin.findOne({ username });
-  const userC = await clinicsDirector.findOne({ username });
-
-  if (!userD && !userP && !userH && !userA && !userC) {
+  if (!userD && !userP && !userH && !userA && !userC && !userHa) {
     let password = req.body.password;
     const name = req.body.name;
     //const image = req.file.path;
@@ -84,42 +46,6 @@ exports.signupClinicsDirector = async (req, res, next) => {
     error.statusCode = 400;
     return next(error);
   }
-}; /* 
-
-
-
-
-*/
-
-exports.signupPatient = async (req, res, next) => {
-  const username = req.body.username;
-
-  const userD = await doctor.findOne({ username });
-  const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
-  const userA = await admin.findOne({ username });
-  const userC = await clinicsDirector.findOne({ username });
-
-  if (!userD && !userP && !userH && !userA && !userC) {
-    let password = req.body.password;
-    const name = req.body.name;
-    const address = req.body.address;
-    const birthday = req.body.birthday;
-
-    password = await bcrypt.hash(password, 10);
-
-    const newUser = await patient.create({
-      username,
-      password,
-      name,
-      address,
-      birthday,
-    });
-    return res.status(200).json({ message: "Patient signup successful" });
-  }
-  const error = new Error("لا يمكن ادخال اسم المستخدم");
-  error.statusCode = 400;
-  return next(error);
 };
 /* 
 
@@ -136,7 +62,9 @@ exports.signupHospital = async (req, res, next) => {
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC) {
+  const userHa = await hospitalAdmin.findOne({ username });
+
+  if (!userD && !userP && !userH && !userA && !userC && !userHa) {
     let password = req.body.password;
     const name = req.body.name;
     const address = req.body.address;
@@ -169,8 +97,9 @@ exports.signupHospital = async (req, res, next) => {
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
+  const userHa = await hospitalAdmin.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC) {
+  if (!userD && !userP && !userH && !userA && !userC && !userHa) {
     const error = new Error("Invalid username or password");
     error.statusCode = 400;
     return next(error);
@@ -187,6 +116,8 @@ exports.signupHospital = async (req, res, next) => {
     user = userH;
   } else if (userC) {
     user = userC;
+  } else if (userHa) {
+    user = userHa;
   }
 
   const isCorrectPassword = await bcrypt.compare(password, user.password);
@@ -200,6 +131,7 @@ exports.signupHospital = async (req, res, next) => {
     {
       email: user.username,
       userId: user._id.toString(),
+      hospitalId: user.hospitalID.toString(),
     },
     "your-secret-key-here",
     { expiresIn: "24h" }
@@ -213,28 +145,6 @@ exports.signupHospital = async (req, res, next) => {
 
 
 */
-
-exports.authorize = async (req, res, next) => {
-  const username = req.body.username;
-
-  const userD = await doctor.findOne({ username });
-  const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
-  const userA = await admin.findOne({ username });
-  if (userD) {
-    res.json({ userD, message: "doctor" });
-  } else if (userH) {
-    res.json({ userH, message: "hospital" });
-  } else if (userA) {
-    res.json({ userA, message: "admin" });
-  } else if (userP) {
-    res.json({ userP, message: "patient" });
-  } else {
-    const error = new Error("cant authorize this user");
-    error.statusCode = 406;
-    return next(error);
-  }
-};
 
 exports.getHospitals = async (req, res, next) => {
   const allHospitals = await hospital.find();

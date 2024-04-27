@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
-const ClinicsDirectorSchema = new schema({
+const hospitalAdminSchema = new schema({
   username: {
     type: String,
     required: true,
@@ -20,8 +20,8 @@ const ClinicsDirectorSchema = new schema({
   },
   role: {
     type: String,
-    default: "CLinicsDirector",
+    default: "HospitalAdmin",
   },
 });
 
-module.exports = mongoose.model("ClinicsDirector", ClinicsDirectorSchema);
+module.exports = mongoose.model("HospitalAdmin", hospitalAdminSchema);
