@@ -186,7 +186,7 @@ exports.showAvailableDay = async (req, res, next) => {
   const doctorID = req.body.doctorID;
   const getDays = await availableTime.find({ doctorID });
   if (getDays) {
-    res.json({ day: getDays.day });
+    res.json({ getDays });
   }
   const error = new Error("doctor not found");
   error.statusCode = 404;
@@ -203,7 +203,7 @@ exports.showAvailableTime = async (req, res, next) => {
   const day = req.body.day;
   const getTime = await availableTime.find({ day, doctorID });
   if (getTime) {
-    res.json({ time: getTime.time });
+    res.json({ getTime });
   }
 
   const error = new Error("doctor not found");
