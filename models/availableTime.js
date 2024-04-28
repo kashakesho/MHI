@@ -3,7 +3,7 @@ const schema = mongoose.Schema;
 
 const av_timeSchema = new schema({
   day: {
-    type: String,
+    type: Date,
     require: true,
   },
   time: {
@@ -13,6 +13,11 @@ const av_timeSchema = new schema({
   doctorID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",
+  },
+  status: {
+    type: String,
+    enum: ["available", "not available"],
+    default: "available",
   },
 });
 

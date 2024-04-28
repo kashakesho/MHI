@@ -8,7 +8,8 @@ const hospital = require("../models/hospital");
 const admin = require("../models/admin");
 const medicine = require("../models/medicine");
 const clinicsDirector = require("../models/clinicsDirector");
-const hospitalAdmin = require("../models/hospital_admin");
+const hospitalAdmin = require("../models/hospitalAdmin");
+const hospitalManager = require("../models/hospitalManager");
 /* 
 
 
@@ -22,8 +23,9 @@ exports.signupHospitalAdmin = async (req, res, next) => {
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
   const userHa = await hospitalAdmin.findOne({ username });
+  const userHm = await hospitalManager.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC && !userHa) {
+  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
     const name = req.body.name;
     //const image = req.file.path;
@@ -61,10 +63,10 @@ exports.signupHospital = async (req, res, next) => {
   const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
-
   const userHa = await hospitalAdmin.findOne({ username });
+  const userHm = await hospitalManager.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC && !userHa) {
+  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
     const name = req.body.name;
     const address = req.body.address;
@@ -98,8 +100,9 @@ exports.signupHospital = async (req, res, next) => {
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
   const userHa = await hospitalAdmin.findOne({ username });
+  const userHm = await hospitalManager.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC && !userHa) {
+  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
     const error = new Error("Invalid username or password");
     error.statusCode = 400;
     return next(error);
@@ -118,6 +121,8 @@ exports.signupHospital = async (req, res, next) => {
     user = userC;
   } else if (userHa) {
     user = userHa;
+  } else if (userHm) {
+    user = userHm;
   }
 
   const isCorrectPassword = await bcrypt.compare(password, user.password);

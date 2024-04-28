@@ -17,4 +17,6 @@ router.get("/countBooks/:id", doctorController.bookCounter);
 router.get("/getPatientRecord/:id", doctorController.getPatientRecords);
 
 router.patch("/changeBookingStatus", doctorController.bookStatus);
+
+router.post("/requestSurgery", doctorController.requestSurgery);
 module.exports = router;

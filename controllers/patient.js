@@ -1,9 +1,9 @@
 const doctors = require("../models/doctor");
 const patients = require("../models/patient");
-
 const hospital = require("../models/hospital");
 const book = require("../models/booking");
 const medicine = require("../models/medicine");
+const availableTime = require("../models/availableTime");
 /* 
 
 
@@ -175,4 +175,38 @@ exports.searchHospital = async (req, res, next) => {
     error.statusCode = 404;
     return next(error);
   }
+};
+/*
+
+
+
+
+*/
+exports.showAvailableDay = async (req, res, next) => {
+  const doctorID = req.body.doctorID;
+  const getDays = await availableTime.find({ doctorID });
+  if (getDays) {
+    res.json({ day: getDays.day });
+  }
+  const error = new Error("doctor not found");
+  error.statusCode = 404;
+  return next(error);
+};
+/*
+
+
+
+
+*/
+exports.showAvailableTime = async (req, res, next) => {
+  const doctorID = req.body.doctorID;
+  const day = req.body.day;
+  const getTime = await availableTime.find({ day, doctorID });
+  if (getTime) {
+    res.json({ time: getTime.time });
+  }
+
+  const error = new Error("doctor not found");
+  error.statusCode = 404;
+  return next(error);
 };

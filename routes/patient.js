@@ -18,4 +18,8 @@ router.post("/searchHospital", patientController.searchHospital);
 
 router.get("/getHospitals", patientController.getHospitals);
 
+router.post("/getDays", patientController.showAvailableDay);
+
+router.post("/getTime", patientController.showAvailableTime);
+
 module.exports = router;

@@ -2,6 +2,7 @@ const records = require("../models/treatment_records");
 const Patients = require("../models/patient");
 const bookings = require("../models/booking");
 const Doctors = require("../models/doctor");
+const surgeries = require("../models/requestSurgeries");
 exports.setRecord = async (req, res, next) => {
   const { medicine, diagnose, patientID, doctorID } = req.body;
 
@@ -152,5 +153,34 @@ exports.getPatientRecords = async (req, res, next) => {
 
   const error = new Error(" المريض غير موجود");
   error.statusCode = 404;
+  return next(error);
+};
+exports.requestSurgery = async (req, res, next) => {
+  const doctor = req.body.doctor;
+  if (!doctor) {
+    const error = new Error(" please enter doctorID");
+    error.statusCode = 422;
+    return next(error);
+  }
+  const patient = req.body.patient;
+  if (!patient) {
+    const error = new Error(" please enter PatientID");
+    error.statusCode = 422;
+    return next(error);
+  }
+  const specialize = req.body.specialize;
+  const description = req.body.description;
+  if (doctor && patient && specialize && description) {
+    const creation = await surgeries.create({
+      doctor,
+      patient,
+      specialize,
+      description,
+    });
+    res.json({ message: "surgery request created" });
+  }
+
+  const error = new Error(" please try again");
+  error.statusCode = 422;
   return next(error);
 };

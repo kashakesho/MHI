@@ -14,7 +14,9 @@ const clinicsDirectorRoute = require("./routes/clinicsDirector");
 
 const doctorRoute = require("./routes/doctor");
 
-const hospitalAdminRoute = require("./routes/hospital_admin");
+const hospitalAdminRoute = require("./routes/hospitalAdmin");
+
+const hospitalManagerRoute = require("./routes/hospitalManager");
 
 const app = express();
 /*
@@ -67,6 +69,8 @@ app.use("/patient", patientRoute);
 app.use("/doctor", doctorRoute);
 
 app.use("/hospitalAdmin", hospitalAdminRoute);
+
+app.use("/hospitalManager", hospitalManagerRoute);
 
 app.use((error, req, res, next) => {
   console.log(error);

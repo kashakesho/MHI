@@ -1,40 +1,7 @@
 const { CURSOR_FLAGS } = require("mongodb");
-const AvailableTime = require("../models/available_time");
+const AvailableTime = require("../models/availableTime");
 const Doctor = require("../models/doctor");
 const { search } = require("../routes/clinicsDirector");
-/*
-async function checkAvailability(day, time, doctorID) {
-  const existingRecord = await AvailableTime.findOne({
-    day,
-    time,
-    doctorID,
-  }).populate("doctorID");
-  return existingRecord;
-}
-
-async function insertIfAvailable(day, time, doctorID, hospitalID, specialize) {
-  const existingRecord = await checkAvailability(day, time, doctorID);
-
-  const hospital = hospitalID.toString();
-  if (!existingRecord) {
-    await AvailableTime.create({ day, time, doctorID });
-
-    console.log("Slot occupied by the same hospital and specialization.");
-
-    return true;
-  } else if (
-    existingRecord.doctorID.hospitalID === hospital &&
-    existingRecord.doctorID.specialize === specialize
-  ) {
-    return false;
-  } else {
-    console.log("New record inserted.");
-
-    await AvailableTime.create({ day, time, doctorID });
-    return true;
-  }
-}
-*/
 
 exports.setTimeForDoctor = async (req, res, next) => {
   const doctorID = req.body.doctorID;
@@ -61,7 +28,6 @@ exports.setTimeForDoctor = async (req, res, next) => {
     for (let i = 0; i < searchForTime.length; i++) {
       let D = searchForTime[i].doctorID;
       let searchS = await Doctor.findById({ _id: D });
-      console.log(D);
       console.log(searchS);
       if (
         searchS.specialize === searchSpecialize &&
@@ -72,7 +38,6 @@ exports.setTimeForDoctor = async (req, res, next) => {
       }
     }
   } else {
-    console.log("ana el mcreate");
     const creation = await AvailableTime.create({ day, time, doctorID });
     res.json(creation);
   }
