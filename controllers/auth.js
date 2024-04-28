@@ -136,7 +136,6 @@ exports.signupHospital = async (req, res, next) => {
     {
       email: user.username,
       userId: user._id.toString(),
-      hospitalId: user.hospitalID.toString(),
     },
     "your-secret-key-here",
     { expiresIn: "24h" }
