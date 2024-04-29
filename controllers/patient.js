@@ -202,11 +202,13 @@ exports.showAvailableTime = async (req, res, next) => {
   const doctorID = req.body.doctorID;
   const day = req.body.day;
   const getTime = await availableTime.find({ day, doctorID });
-  if (getTime) {
-    res.json({ getTime });
-  }
 
-  const error = new Error("doctor not found");
-  error.statusCode = 404;
-  return next(error);
+  if (getTime && getTime.length > 0) {
+    const time = getTime.map((slot) => slot.time);
+    res.json(time);
+  } else {
+    const error = new Error("Doctor not found or no available time slots");
+    error.statusCode = 404;
+    return next(error);
+  }
 };
