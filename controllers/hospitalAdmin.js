@@ -6,6 +6,7 @@ const clinicsDirector = require("../models/clinicsDirector");
 const hospitalManager = require("../models/hospitalManager");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
+const hospitalAdmin = require("../models/hospitalAdmin");
 
 exports.signupHospitalManager = async (req, res, next) => {
   const username = req.body.username;
