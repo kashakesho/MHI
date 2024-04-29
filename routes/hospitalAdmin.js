@@ -9,5 +9,8 @@ router.post(
   "/signupClinicsDirector",
   hospitalAdminController.signupClinicsDirector
 );
-
+router.post(
+  "/signupHospitalManager",
+  hospitalAdminController.signupHospitalManager
+);
 module.exports = router;
