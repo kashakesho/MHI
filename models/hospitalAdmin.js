@@ -22,6 +22,10 @@ const hospitalAdminSchema = new schema({
     type: String,
     default: "HospitalAdmin",
   },
+  code: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("HospitalAdmin", hospitalAdminSchema);

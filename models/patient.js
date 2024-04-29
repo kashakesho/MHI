@@ -22,9 +22,14 @@ const patientSchema = new schema({
     type: Date,
     required: true,
   },
+
   role: {
     type: String,
     default: "patient",
+  },
+  code: {
+    type: String,
+    required: true,
   },
 });
 

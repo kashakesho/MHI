@@ -30,6 +30,10 @@ const doctorSchema = new schema({
     type: String,
     default: "doctor",
   },
+  code: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Doctor", doctorSchema);

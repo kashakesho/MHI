@@ -23,6 +23,10 @@ const hospitalSchema = new schema({
     type: String,
     default: "hospital",
   },
+  code: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Hospital", hospitalSchema);

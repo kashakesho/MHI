@@ -13,4 +13,6 @@ router.get("/getHospitals", authController.getHospitals);
 
 router.post("/createMedicine", authController.createMedicine);
 
+router.post("/signupPatient", authController.signupPatient);
+
 module.exports = router;

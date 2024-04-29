@@ -22,6 +22,10 @@ const ClinicsDirectorSchema = new schema({
     type: String,
     default: "CLinicsDirector",
   },
+  code: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("ClinicsDirector", ClinicsDirectorSchema);
