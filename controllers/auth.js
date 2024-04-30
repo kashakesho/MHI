@@ -156,20 +156,28 @@ exports.signupHospital = async (req, res, next) => {
   }
 
   let user;
+  let tokenNav;
   if (userA) {
     user = userA;
+    tokenNav = false;
   } else if (userD) {
     user = userD;
+    tokenNav = true;
   } else if (userP) {
     user = userP;
+    tokenNav = false;
   } else if (userH) {
     user = userH;
+    tokenNav = false;
   } else if (userC) {
     user = userC;
+    tokenNav = true;
   } else if (userHa) {
     user = userHa;
+    tokenNav = true;
   } else if (userHm) {
     user = userHm;
+    tokenNav = true;
   }
 
   const isCorrectPassword = await bcrypt.compare(password, user.password);
@@ -178,17 +186,29 @@ exports.signupHospital = async (req, res, next) => {
     error.statusCode = 400;
     return next(error);
   }
+  if (tokenNav) {
+    const token = jwt.sign(
+      {
+        email: user.username,
+        userId: user._id.toString(),
+        hospitalID: user.hospitalID.toString(),
+      },
+      "your-secret-key-here",
+      { expiresIn: "24h" }
+    );
 
-  const token = jwt.sign(
-    {
-      email: user.username,
-      userId: user._id.toString(),
-    },
-    "your-secret-key-here",
-    { expiresIn: "24h" }
-  );
-
-  return res.status(200).json({ token, user });
+    return res.status(200).json({ token, user });
+  } else {
+    const token = jwt.sign(
+      {
+        email: user.username,
+        userId: user._id.toString(),
+      },
+      "your-secret-key-here",
+      { expiresIn: "24h" }
+    );
+    return res.status(200).json({ token, user });
+  }
 };
 /* 
 
