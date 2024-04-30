@@ -295,7 +295,7 @@ exports.getHospitals = async (req, res, next) => {
       { expiresIn: "24h" }
     );
 
-    return res.status(200).json({ token });
+    return res.status(200).json({ token, user });
   } else {
     const token = jwt.sign(
       {
@@ -306,7 +306,7 @@ exports.getHospitals = async (req, res, next) => {
       "your-secret-key-here",
       { expiresIn: "24h" }
     );
-    return res.status(200).json({ token });
+    return res.status(200).json({ token, user });
   }
 };
 
