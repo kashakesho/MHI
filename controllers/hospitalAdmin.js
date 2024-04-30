@@ -133,7 +133,7 @@ exports.signupClinicsDirector = async (req, res, next) => {
     }
   } else {
     const error = new Error("لا يمكن ادخال اسم المستخدم");
-    error.statusCode = 400;
+    error.statusCode = 422;
     return next(error);
   }
 }; /* 
@@ -147,4 +147,7 @@ exports.getClinicsDirector = async (req, res, next) => {
   if (getDirectors) {
     res.json(getDirectors);
   }
+  const error = new Error("directors not found");
+  error.statusCode = 404;
+  return next(error);
 };

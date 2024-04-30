@@ -15,4 +15,6 @@ router.post("/createMedicine", authController.createMedicine);
 
 router.post("/signupPatient", authController.signupPatient);
 
+router.post("/singupHospitalAdmin", authController.signupHospitalAdmin);
+
 module.exports = router;
