@@ -76,7 +76,7 @@ exports.signupHospitalAdmin = async (req, res, next) => {
     if (H) {
       password = await bcrypt.hash(password, 10);
 
-      const newUser = await clinicsDirector.create({
+      const newUser = await hospitalAdmin.create({
         username,
         password,
         name,
