@@ -7,6 +7,7 @@ const hospitalManager = require("../models/hospitalManager");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 const hospitalAdmin = require("../models/hospitalAdmin");
+const { get } = require("mongoose");
 
 exports.signupHospitalManager = async (req, res, next) => {
   const username = req.body.username;
@@ -141,3 +142,9 @@ exports.signupClinicsDirector = async (req, res, next) => {
   
   
   */
+exports.getClinicsDirector = async (req, res, next) => {
+  const getDirectors = await clinicsDirector.find();
+  if (getDirectors) {
+    res.json(getDirectors);
+  }
+};

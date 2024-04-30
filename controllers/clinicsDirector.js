@@ -1,7 +1,5 @@
-const { CURSOR_FLAGS } = require("mongodb");
 const AvailableTime = require("../models/availableTime");
 const Doctor = require("../models/doctor");
-const { search } = require("../routes/clinicsDirector");
 
 exports.setTimeForDoctor = async (req, res, next) => {
   const doctorID = req.body.doctorID;
