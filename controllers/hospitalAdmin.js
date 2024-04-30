@@ -46,6 +46,39 @@ exports.signupHospitalManager = async (req, res, next) => {
     error.statusCode = 400;
     return next(error);
   }
+}; /* 
+  
+  
+  
+  
+*/
+exports.gethospitalManager = async (req, res, next) => {
+  const hospitalID = req.params.id;
+  const getmanagers = await hospitalManager.find({ hospitalID });
+  if (getmanagers) {
+    res.json(getmanagers);
+  }
+  const error = new Error("manager not found");
+  error.statusCode = 404;
+  return next(error);
+};
+
+/* 
+  
+  
+  
+  
+  */ exports.deleteHospitalManager = async (req, res, next) => {
+  const managerID = req.body._id;
+  const deletemanager = await hospitalManager.findByIdAndDelete({
+    _id: managerID,
+  });
+  if (deletemanager) {
+    res.json({ message: "deleted sucessfully" });
+  }
+  const error = new Error("manager not found");
+  error.statusCode = 404;
+  return next(error);
 };
 /* 
   
@@ -93,7 +126,40 @@ exports.signupDoctor = async (req, res, next) => {
     error.statusCode = 400;
     return next(error);
   }
+}; /* 
+  
+  
+  
+  
+*/
+exports.getdoctors = async (req, res, next) => {
+  const hospitalID = req.params.id;
+  const getdoctor = await doctor.find({ hospitalID });
+  if (getdoctor) {
+    res.json(getdoctor);
+  }
+  const error = new Error("doctors not found");
+  error.statusCode = 404;
+  return next(error);
 };
+/* 
+  
+  
+  
+  
+*/ exports.deleteDoctor = async (req, res, next) => {
+  const doctorID = req.body._id;
+  const deleteD = await doctor.findByIdAndDelete({
+    _id: doctorID,
+  });
+  if (deleteD) {
+    res.json({ message: "deleted sucessfully" });
+  }
+  const error = new Error("manager not found");
+  error.statusCode = 404;
+  return next(error);
+};
+
 /* 
   
   
@@ -142,12 +208,30 @@ exports.signupClinicsDirector = async (req, res, next) => {
   
   
   */
-exports.getClinicsDirector = async (req, res, next) => {
-  const getDirectors = await clinicsDirector.find();
+exports.getClinicsDirectors = async (req, res, next) => {
+  const hospitalID = req.params.id;
+  const getDirectors = await clinicsDirector.find({ hospitalID });
   if (getDirectors) {
     res.json(getDirectors);
   }
   const error = new Error("directors not found");
+  error.statusCode = 404;
+  return next(error);
+};
+/* 
+  
+  
+  
+  
+  */ exports.deleteDirector = async (req, res, next) => {
+  const directorID = req.body._id;
+  const deleteD = await clinicsDirector.findByIdAndDelete({
+    _id: directorID,
+  });
+  if (deleteD) {
+    res.json({ message: "deleted sucessfully" });
+  }
+  const error = new Error("manager not found");
   error.statusCode = 404;
   return next(error);
 };

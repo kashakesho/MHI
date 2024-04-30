@@ -54,6 +54,37 @@ exports.signupPatient = async (req, res, next) => {
 
 
 */
+exports.getPatients = async (req, res, next) => {
+  const getPatient = await patient.find();
+  if (getPatient) {
+    res.json(getPatient);
+  }
+  const error = new Error("manager not found");
+  error.statusCode = 404;
+  return next(error);
+};
+/* 
+  
+  
+  
+  
+*/ exports.deletePatient = async (req, res, next) => {
+  const patientID = req.body._id;
+  const deleteP = await patient.findByIdAndDelete({
+    _id: patientID,
+  });
+  if (deleteP) {
+    res.json({ message: "deleted sucessfully" });
+  }
+  const error = new Error("manager not found");
+  error.statusCode = 404;
+  return next(error);
+}; /* 
+
+
+
+
+*/
 exports.signupHospitalAdmin = async (req, res, next) => {
   const username = req.body.username;
   const userD = await doctor.findOne({ username });
@@ -84,13 +115,46 @@ exports.signupHospitalAdmin = async (req, res, next) => {
         hospitalID,
         code,
       });
-      return res.status(200).json({ message: "director signup successful" });
+      return res
+        .status(200)
+        .json({ message: "hospital admin signup successful" });
     }
   } else {
     const error = new Error("لا يمكن ادخال اسم المستخدم");
     error.statusCode = 400;
     return next(error);
   }
+};
+/* 
+
+
+
+*/
+exports.getHosptalAdmins = async (req, res, next) => {
+  const getHA = await hospitalAdmin.find();
+  if (getHA) {
+    res.json(getHA);
+  }
+  const error = new Error("manager not found");
+  error.statusCode = 404;
+  return next(error);
+};
+/* 
+  
+  
+  
+  
+*/ exports.deleteHospitalAdmin = async (req, res, next) => {
+  const adminID = req.body._id;
+  const deleteHA = await hospitalAdmin.findByIdAndDelete({
+    _id: adminID,
+  });
+  if (deleteHA) {
+    res.json({ message: "deleted sucessfully" });
+  }
+  const error = new Error("manager not found");
+  error.statusCode = 404;
+  return next(error);
 };
 /* 
 
@@ -131,6 +195,39 @@ exports.signupHospital = async (req, res, next) => {
 
   const error = new Error("لا يمكن ادخال اسم المستخدم");
   error.statusCode = 400;
+  return next(error);
+}; /* 
+
+
+
+
+*/
+
+exports.getHospitals = async (req, res, next) => {
+  const allHospitals = await hospital.find();
+  if (allHospitals) {
+    res.json({ allHospitals });
+  }
+
+  const error = new Error("hospital not found");
+  error.statusCode = 404;
+  return next(error);
+};
+/* 
+  
+  
+  
+  
+*/ exports.deleteHospital = async (req, res, next) => {
+  const hospitalID = req.body._id;
+  const deleteH = await hospital.findByIdAndDelete({
+    _id: hospitalID,
+  });
+  if (deleteH) {
+    res.json({ message: "deleted sucessfully" });
+  }
+  const error = new Error("manager not found");
+  error.statusCode = 404;
   return next(error);
 };
 /* 
@@ -192,41 +289,27 @@ exports.signupHospital = async (req, res, next) => {
         email: user.username,
         userId: user._id.toString(),
         hospitalID: user.hospitalID.toString(),
+        role: user.role,
       },
       "your-secret-key-here",
       { expiresIn: "24h" }
     );
 
-    return res.status(200).json({ token, user });
+    return res.status(200).json({ token });
   } else {
     const token = jwt.sign(
       {
         email: user.username,
         userId: user._id.toString(),
+        role: user.role,
       },
       "your-secret-key-here",
       { expiresIn: "24h" }
     );
-    return res.status(200).json({ token, user });
+    return res.status(200).json({ token });
   }
 };
-/* 
 
-
-
-
-*/
-
-exports.getHospitals = async (req, res, next) => {
-  const allHospitals = await hospital.find();
-  if (allHospitals) {
-    res.json({ allHospitals });
-  }
-
-  const error = new Error("hospital not found");
-  error.statusCode = 404;
-  return next(error);
-};
 /*
 
 

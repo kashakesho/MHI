@@ -17,4 +17,14 @@ router.post("/signupPatient", authController.signupPatient);
 
 router.post("/singupHospitalAdmin", authController.signupHospitalAdmin);
 
+router.delete("/deleteHopsital", authController.deleteHospital);
+
+router.delete("/deletePatient", authController.deletePatient);
+
+router.delete("/deleteHospitalAdmin", authController.deleteHospitalAdmin);
+
+router.get("/getPatients", authController.getPatients);
+
+router.get("/getHospitalAdmins", authController.getHosptalAdmins);
+
 module.exports = router;
