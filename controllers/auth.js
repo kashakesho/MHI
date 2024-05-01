@@ -69,14 +69,14 @@ exports.getPatients = async (req, res, next) => {
   
   
 */ exports.deletePatient = async (req, res, next) => {
-  const patientID = req.body._id;
+  const patientID = req.body.patientID;
   const deleteP = await patient.findByIdAndDelete({
     _id: patientID,
   });
   if (deleteP) {
     res.json({ message: "deleted sucessfully" });
   }
-  const error = new Error("manager not found");
+  const error = new Error("patient not found");
   error.statusCode = 404;
   return next(error);
 }; /* 
@@ -135,7 +135,7 @@ exports.getHosptalAdmins = async (req, res, next) => {
   if (getHA) {
     res.json(getHA);
   }
-  const error = new Error("manager not found");
+  const error = new Error("admin not found");
   error.statusCode = 404;
   return next(error);
 };
@@ -145,14 +145,14 @@ exports.getHosptalAdmins = async (req, res, next) => {
   
   
 */ exports.deleteHospitalAdmin = async (req, res, next) => {
-  const adminID = req.body._id;
+  const adminID = req.body.adminID;
   const deleteHA = await hospitalAdmin.findByIdAndDelete({
     _id: adminID,
   });
   if (deleteHA) {
     res.json({ message: "deleted sucessfully" });
   }
-  const error = new Error("manager not found");
+  const error = new Error("admin not found");
   error.statusCode = 404;
   return next(error);
 };
@@ -219,14 +219,14 @@ exports.getHospitals = async (req, res, next) => {
   
   
 */ exports.deleteHospital = async (req, res, next) => {
-  const hospitalID = req.body._id;
+  const hospitalID = req.body.hospitalID;
   const deleteH = await hospital.findByIdAndDelete({
     _id: hospitalID,
   });
   if (deleteH) {
     res.json({ message: "deleted sucessfully" });
   }
-  const error = new Error("manager not found");
+  const error = new Error("Hospital not found");
   error.statusCode = 404;
   return next(error);
 };

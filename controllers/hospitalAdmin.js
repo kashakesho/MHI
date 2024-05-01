@@ -7,7 +7,6 @@ const hospitalManager = require("../models/hospitalManager");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 const hospitalAdmin = require("../models/hospitalAdmin");
-const { get } = require("mongoose");
 
 exports.signupHospitalManager = async (req, res, next) => {
   const username = req.body.username;
@@ -69,7 +68,7 @@ exports.gethospitalManager = async (req, res, next) => {
   
   
   */ exports.deleteHospitalManager = async (req, res, next) => {
-  const managerID = req.body._id;
+  const managerID = req.body.managerID;
   const deletemanager = await hospitalManager.findByIdAndDelete({
     _id: managerID,
   });
@@ -148,14 +147,14 @@ exports.getdoctors = async (req, res, next) => {
   
   
 */ exports.deleteDoctor = async (req, res, next) => {
-  const doctorID = req.body._id;
+  const doctorID = req.body.doctorID;
   const deleteD = await doctor.findByIdAndDelete({
     _id: doctorID,
   });
   if (deleteD) {
     res.json({ message: "deleted sucessfully" });
   }
-  const error = new Error("manager not found");
+  const error = new Error("doctor not found");
   error.statusCode = 404;
   return next(error);
 };
@@ -224,14 +223,14 @@ exports.getClinicsDirectors = async (req, res, next) => {
   
   
   */ exports.deleteDirector = async (req, res, next) => {
-  const directorID = req.body._id;
+  const directorID = req.body.directorID;
   const deleteD = await clinicsDirector.findByIdAndDelete({
     _id: directorID,
   });
   if (deleteD) {
     res.json({ message: "deleted sucessfully" });
   }
-  const error = new Error("manager not found");
+  const error = new Error("director not found");
   error.statusCode = 404;
   return next(error);
 };
