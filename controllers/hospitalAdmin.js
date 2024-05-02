@@ -38,7 +38,7 @@ exports.signupHospitalManager = async (req, res, next) => {
         hospitalID,
         code,
       });
-      return res.status(200).json({ message: "director signup successful" });
+      return res.status(200).json({ message: "manager signup successful" });
     }
   } else {
     const error = new Error("لا يمكن ادخال اسم المستخدم");
