@@ -173,6 +173,7 @@ exports.signupClinicsDirector = async (req, res, next) => {
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
   const userHm = await hospitalManager.findOne({ username });
+  const userHa = await hospitalAdmin.findOne({ username });
 
   if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
