@@ -23,7 +23,7 @@ exports.signupHospitalManager = async (req, res, next) => {
     const name = req.body.name;
     //const image = req.file.path;
     const hospitalID = req.body.hospitalID;
-    const H = await hospital.findById({ hospitalID });
+    const H = await hospital.findById({ _id: hospitalID });
     const prefix = "HM-";
     const uniqueId = uuidv4().substr(0, 6);
     const code = prefix + uniqueId;
@@ -102,7 +102,7 @@ exports.signupDoctor = async (req, res, next) => {
     //const image = req.file.path;
     const specialize = req.body.specialize;
     const hospitalID = req.body.hospitalID;
-    const H = await hospital.findById({ hospitalID });
+    const H = await hospital.findById({ _id: hospitalID });
     const prefix = "DR-";
     const uniqueId = uuidv4().substr(0, 6);
     const code = prefix + uniqueId;
@@ -180,7 +180,7 @@ exports.signupClinicsDirector = async (req, res, next) => {
     const name = req.body.name;
     //const image = req.file.path;
     const hospitalID = req.body.hospitalID;
-    const H = await hospital.findById({ hospitalID });
+    const H = await hospital.findById({ _id: hospitalID });
     const prefix = "CD-";
     const uniqueId = uuidv4().substr(0, 6);
     const code = prefix + uniqueId;
