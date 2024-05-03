@@ -284,6 +284,7 @@ exports.getHospitals = async (req, res, next) => {
     return next(error);
   }
   if (tokenNav) {
+    const hospitalDetails = await hospital.find({ _id: user.hospitalID });
     const token = jwt.sign(
       {
         email: user.username,
@@ -295,7 +296,7 @@ exports.getHospitals = async (req, res, next) => {
       { expiresIn: "24h" }
     );
 
-    return res.status(200).json({ token, user });
+    return res.status(200).json({ token, user, hospitalDetails });
   } else {
     const token = jwt.sign(
       {
