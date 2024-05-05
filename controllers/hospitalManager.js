@@ -39,7 +39,8 @@ exports.appointSurgery = async (req, res, next) => {
 };
 
 exports.getSurgeriesRequests = async (req, res, next) => {
-  const getsurgeries = await surgeries.find();
+  const hospitalID = req.params.id;
+  const getsurgeries = await surgeries.find({ hospitalID });
   if (getsurgeries) {
     res.json(getsurgeries);
   }

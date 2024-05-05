@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.patch("/appointSurgery", hospitalManagerController.appointSurgery);
 
-router.get("/getRequests", hospitalManagerController.getSurgeriesRequests);
+router.get("/getRequests/:id", hospitalManagerController.getSurgeriesRequests);
 
 module.exports = router;

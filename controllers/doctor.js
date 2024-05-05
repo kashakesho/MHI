@@ -170,12 +170,14 @@ exports.requestSurgery = async (req, res, next) => {
   }
   const specialize = req.body.specialize;
   const description = req.body.description;
+  const hospitalID = req.body.hospitalID;
   if (doctor && patient && specialize && description) {
     const creation = await surgeries.create({
       doctor,
       patient,
       specialize,
       description,
+      hospitalID,
     });
     res.json({ message: "surgery request created" });
   }

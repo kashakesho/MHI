@@ -30,6 +30,10 @@ const surgeriesSchema = new schema({
     enum: ["Done", "Cancelled", "Waiting"],
     default: "Waiting",
   },
+  hospitalID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Hospital",
+  },
 });
 
 module.exports = mongoose.model("surgeries", surgeriesSchema);
