@@ -3,6 +3,7 @@ const Patients = require("../models/patient");
 const bookings = require("../models/booking");
 const Doctors = require("../models/doctor");
 const surgeries = require("../models/requestSurgeries");
+const appointedSurgeries = require("../models/appointsurgery");
 exports.setRecord = async (req, res, next) => {
   const { medicine, diagnose, patientID, doctorID } = req.body;
 
@@ -184,5 +185,15 @@ exports.requestSurgery = async (req, res, next) => {
 
   const error = new Error(" please try again");
   error.statusCode = 422;
+  return next(error);
+};
+exports.getAppointedSurgeries = async (req, res, next) => {
+  const doctorID = req.params.id;
+  const getsurgeries = appointedSurgeries.find({ doctorID });
+  if (getsurgeries) {
+    res.json(getsurgeries);
+  }
+  const error = new Error("no serguries found");
+  error.statusCode = 404;
   return next(error);
 };

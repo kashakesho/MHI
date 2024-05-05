@@ -284,7 +284,7 @@ exports.getHospitals = async (req, res, next) => {
     return next(error);
   }
   if (tokenNav) {
-    const hospitalDetails = await hospital.find({ _id: user.hospitalID });
+    const hospitalDetails = await hospital.findById({ _id: user.hospitalID });
     const token = jwt.sign(
       {
         email: user.username,
