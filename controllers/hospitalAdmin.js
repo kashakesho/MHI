@@ -12,13 +12,12 @@ exports.signupHospitalManager = async (req, res, next) => {
   const username = req.body.username;
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
   const userHa = await hospitalAdmin.findOne({ username });
   const userHm = await hospitalManager.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
+  if (!userD && !userP && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
     const name = req.body.name;
     //const image = req.file.path;
@@ -90,13 +89,12 @@ exports.signupDoctor = async (req, res, next) => {
   const username = req.body.username;
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
   const userHa = await hospitalAdmin.findOne({ username });
   const userHm = await hospitalManager.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
+  if (!userD && !userP && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
     const name = req.body.name;
     //const image = req.file.path;
@@ -169,13 +167,12 @@ exports.signupClinicsDirector = async (req, res, next) => {
   const username = req.body.username;
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
   const userHm = await hospitalManager.findOne({ username });
   const userHa = await hospitalAdmin.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
+  if (!userD && !userP && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
     const name = req.body.name;
     //const image = req.file.path;

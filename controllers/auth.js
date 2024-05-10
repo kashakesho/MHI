@@ -17,13 +17,12 @@ exports.signupPatient = async (req, res, next) => {
 
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
   const userHa = await hospitalAdmin.findOne({ username });
   const userHm = await hospitalManager.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
+  if (!userD && !userP && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
     const name = req.body.name;
     const address = req.body.address;
@@ -31,6 +30,7 @@ exports.signupPatient = async (req, res, next) => {
     const prefix = "PT-";
     const uniqueId = uuidv4().substr(0, 6);
     const code = prefix + uniqueId;
+    const mobileNumber = req.body.mobileNumber;
 
     password = await bcrypt.hash(password, 10);
 
@@ -41,6 +41,7 @@ exports.signupPatient = async (req, res, next) => {
       address,
       birthday,
       code,
+      mobileNumber,
     });
     return res.status(200).json({ message: "Patient signup successful" });
   }
@@ -89,13 +90,12 @@ exports.signupHospitalAdmin = async (req, res, next) => {
   const username = req.body.username;
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
   const userHa = await hospitalAdmin.findOne({ username });
   const userHm = await hospitalManager.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
+  if (!userD && !userP && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
     const name = req.body.name;
     //const image = req.file.path;
@@ -163,29 +163,14 @@ exports.getHosptalAdmins = async (req, res, next) => {
 
 */
 exports.signupHospital = async (req, res, next) => {
-  const username = req.body.username;
+  const name = req.body.name;
+  const address = req.body.address;
+  const prefix = "HP-";
+  const uniqueId = uuidv4().substr(0, 6);
+  const code = prefix + uniqueId;
 
-  const userD = await doctor.findOne({ username });
-  const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
-  const userA = await admin.findOne({ username });
-  const userC = await clinicsDirector.findOne({ username });
-  const userHa = await hospitalAdmin.findOne({ username });
-  const userHm = await hospitalManager.findOne({ username });
-
-  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
-    let password = req.body.password;
-    const name = req.body.name;
-    const address = req.body.address;
-    const prefix = "HP-";
-    const uniqueId = uuidv4().substr(0, 6);
-    const code = prefix + uniqueId;
-
-    password = await bcrypt.hash(password, 10);
-
+  if (name) {
     const newUser = await hospital.create({
-      username,
-      password,
       name,
       address,
       code,
@@ -240,13 +225,12 @@ exports.getHospitals = async (req, res, next) => {
 
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
-  const userH = await hospital.findOne({ username });
   const userA = await admin.findOne({ username });
   const userC = await clinicsDirector.findOne({ username });
   const userHa = await hospitalAdmin.findOne({ username });
   const userHm = await hospitalManager.findOne({ username });
 
-  if (!userD && !userP && !userH && !userA && !userC && !userHa && !userHm) {
+  if (!userD && !userP && !userA && !userC && !userHa && !userHm) {
     const error = new Error("Invalid username or password");
     error.statusCode = 400;
     return next(error);
@@ -262,9 +246,6 @@ exports.getHospitals = async (req, res, next) => {
     tokenNav = true;
   } else if (userP) {
     user = userP;
-    tokenNav = false;
-  } else if (userH) {
-    user = userH;
     tokenNav = false;
   } else if (userC) {
     user = userC;

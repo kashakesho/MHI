@@ -5,6 +5,7 @@ const hospitalAdminSchema = new schema({
   username: {
     type: String,
     required: true,
+    match: /^\S*$/,
   },
   password: {
     type: String,

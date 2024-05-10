@@ -1,3 +1,4 @@
+const availableTime = require("../models/availableTime");
 const AvailableTime = require("../models/availableTime");
 const Doctor = require("../models/doctor");
 
@@ -19,9 +20,13 @@ exports.setTimeForDoctor = async (req, res, next) => {
 
   // Search for available time slots
   const searchForTime = await AvailableTime.find({ day, time });
-
+  const searchForDay = await availableTime.findOne({ day, time, doctorID });
   let isDoctorAppointable = true;
-
+  if (searchForDay) {
+    const error = new Error("cant appoint doctor in this day");
+    error.statusCode = 422;
+    return next(error);
+  }
   if (searchForTime) {
     for (let i = 0; i < searchForTime.length; i++) {
       let D = searchForTime[i].doctorID;

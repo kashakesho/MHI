@@ -21,4 +21,6 @@ router.patch("/changeBookingStatus", doctorController.bookStatus);
 router.post("/requestSurgery", doctorController.requestSurgery);
 
 router.get("/getSurgeries/:id", doctorController.getAppointedSurgeries);
+
+router.patch("/cancelDay", doctorController.cancelDay);
 module.exports = router;

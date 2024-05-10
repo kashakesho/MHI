@@ -70,39 +70,32 @@ exports.appoint = async (req, res, next) => {
     error.statusCode = 400;
     return next(error);
   }
-  if (!patientID) {
-    const error = new Error("please enter the patient ID");
-    error.statusCode = 400;
-    return next(error);
-  }
-  if (!doctorID) {
-    const error = new Error("please enter the doctor ID");
-    error.statusCode = 400;
-    return next(error);
-  }
 
   const doctor = await doctors.findById({ _id: doctorID });
   const patient = await patients.findById({ _id: patientID });
 
   if (doctor && patient) {
-    const D = await book.findOne({ doctorID, day, time });
-    if (D) {
-      const error = new Error(" لا يمكن الحجز هذا اليوم");
-      error.statusCode = 406;
+    const searchDay = await book.findOne({ day, doctorID, patientID });
+    if (searchDay) {
+      const error = new Error("cant book patient this day");
+      error.statusCode = 422;
       return next(error);
     } else {
-      const theBook = await book.create({
-        day,
-        time,
-        patientID,
-        doctorID,
-      });
-      return res.json({ theBook });
+      const D = await book.findOne({ doctorID, day, time });
+      if (D) {
+        const error = new Error(" لا يمكن الحجز هذا اليوم");
+        error.statusCode = 406;
+        return next(error);
+      } else {
+        const theBook = await book.create({
+          day,
+          time,
+          patientID,
+          doctorID,
+        });
+        return res.json({ theBook });
+      }
     }
-  } else {
-    const error = new Error("not found");
-    error.statusCode = 404;
-    return next(error);
   }
 };
 /* 
@@ -184,7 +177,10 @@ exports.searchHospital = async (req, res, next) => {
 */
 exports.showAvailableDay = async (req, res, next) => {
   const doctorID = req.body.doctorID;
-  const getDays = await availableTime.find({ doctorID });
+  const getDays = await availableTime.find({ doctorID }).populate({
+    path: "Doctor",
+    select: ["name", "specialize"],
+  });
   if (getDays) {
     res.json({ getDays });
   }

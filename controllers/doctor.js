@@ -4,6 +4,7 @@ const bookings = require("../models/booking");
 const Doctors = require("../models/doctor");
 const surgeries = require("../models/requestSurgeries");
 const appointedSurgeries = require("../models/appointsurgery");
+const availableTime = require("../models/availableTime");
 exports.setRecord = async (req, res, next) => {
   const { medicine, diagnose, patientID, doctorID } = req.body;
 
@@ -35,7 +36,8 @@ exports.getRecords = async (req, res, next) => {
     .populate({
       path: "doctor",
       select: ["name", "specialize", "hospitalID"],
-    });
+    })
+    .sort({ date: 1 });
 
   if (userR) {
     return res.json({ userR });
@@ -67,7 +69,8 @@ exports.getBooks = async (req, res, next) => {
     .populate({
       path: "patientID",
       select: ["username", "name", "birthday"],
-    });
+    })
+    .sort({ time: 1 });
 
   if (getbook.length > 0) {
     res.json({ getbook });
@@ -196,4 +199,24 @@ exports.getAppointedSurgeries = async (req, res, next) => {
   const error = new Error("no serguries found");
   error.statusCode = 404;
   return next(error);
+};
+exports.cancelDay = async (req, res, next) => {
+  const day = req.body.day;
+  const doctorID = req.body.doctorID;
+  const findDay = await availableTime.findOne({ day, doctorID });
+
+  let changeStatus; // Declare changeStatus outside of the if block
+
+  if (findDay) {
+    changeStatus = await availableTime.findOneAndUpdate(
+      { doctorID: doctorID, day: day }, // Filter conditions
+      { $set: { status: "not available" } }, // Update object
+      { new: true } // Options: Return the modified document
+    );
+    res.json({ findDay });
+  } else {
+    const error = new Error("Cannot find this day");
+    error.statusCode = 404;
+    return next(error);
+  }
 };

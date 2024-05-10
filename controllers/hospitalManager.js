@@ -1,6 +1,7 @@
 const surgeries = require("../models/requestSurgeries");
 const availableTime = require("../models/availableTime");
 const appointSurgery = require("../models/appointsurgery");
+
 exports.appointSurgery = async (req, res, next) => {
   const doctorID = req.body.doctorID;
   const patientID = req.body.patientID;
@@ -40,11 +41,21 @@ exports.appointSurgery = async (req, res, next) => {
 
 exports.getSurgeriesRequests = async (req, res, next) => {
   const hospitalID = req.params.id;
-  const getsurgeries = await surgeries.find({ hospitalID });
+  const getsurgeries = await surgeries
+    .find({ hospitalID })
+    .populate({
+      path: "patient",
+      select: ["username", "name", "birthday"],
+    })
+    .populate({
+      path: "doctor",
+      select: ["name", "specialize", "hospitalID"],
+    });
   if (getsurgeries) {
     res.json(getsurgeries);
+  } else {
+    const error = new Error("  no surgeries found");
+    error.statusCode = 404;
+    return next(error);
   }
-  const error = new Error("  no surgeries found");
-  error.statusCode = 404;
-  return next(error);
 };

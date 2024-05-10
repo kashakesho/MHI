@@ -5,6 +5,7 @@ const patientSchema = new schema({
   username: {
     type: String,
     required: true,
+    match: /^\S*$/,
   },
   password: {
     type: String,
@@ -28,6 +29,10 @@ const patientSchema = new schema({
     default: "patient",
   },
   code: {
+    type: String,
+    required: true,
+  },
+  mobileNumber: {
     type: String,
     required: true,
   },
