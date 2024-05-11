@@ -192,13 +192,23 @@ exports.requestSurgery = async (req, res, next) => {
 };
 exports.getAppointedSurgeries = async (req, res, next) => {
   const doctorID = req.params.id;
-  const getsurgeries = appointedSurgeries.find({ doctorID });
-  if (getsurgeries) {
+  const getsurgeries = await appointedSurgeries
+    .find({ doctorID })
+    .populate({
+      path: "patient",
+      select: ["username", "name", "birthday"],
+    })
+    .populate({
+      path: "doctor",
+      select: ["name", "specialize", "hospitalID"],
+    });
+  if (getsurgeries.length > 0) {
     res.json(getsurgeries);
+  } else {
+    const error = new Error("no serguries found");
+    error.statusCode = 404;
+    return next(error);
   }
-  const error = new Error("no serguries found");
-  error.statusCode = 404;
-  return next(error);
 };
 exports.cancelDay = async (req, res, next) => {
   const day = req.body.day;
