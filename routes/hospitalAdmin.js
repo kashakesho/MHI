@@ -38,4 +38,6 @@ router.delete(
   "/deleteHospitalManager",
   hospitalAdminController.deleteHospitalManager
 );
+
+router.get("/getSpecializes", hospitalAdminController.getSpecializes);
 module.exports = router;

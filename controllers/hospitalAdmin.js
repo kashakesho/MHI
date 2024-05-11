@@ -7,6 +7,7 @@ const hospitalManager = require("../models/hospitalManager");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 const hospitalAdmin = require("../models/hospitalAdmin");
+const specializes = require("../models/specializes");
 
 exports.signupHospitalManager = async (req, res, next) => {
   const username = req.body.username;
@@ -99,6 +100,12 @@ exports.signupDoctor = async (req, res, next) => {
     const name = req.body.name;
     //const image = req.file.path;
     const specialize = req.body.specialize;
+    const findSpecialize = specializes.findById({ _id: specialize });
+    if (!findSpecialize) {
+      const error = new Error("specialize not found");
+      error.statusCode = 404;
+      return next(error);
+    }
     const hospitalID = req.body.hospitalID;
     const H = await hospital.findById({ _id: hospitalID });
     const prefix = "DR-";
@@ -227,6 +234,16 @@ exports.getClinicsDirectors = async (req, res, next) => {
   });
   if (deleteD) {
     res.json({ message: "deleted sucessfully" });
+  }
+  const error = new Error("director not found");
+  error.statusCode = 404;
+  return next(error);
+};
+
+exports.getSpecializes = async (req, res, next) => {
+  const getAll = specializes.find();
+  if (getAll) {
+    res.json(getAll);
   }
   const error = new Error("director not found");
   error.statusCode = 404;

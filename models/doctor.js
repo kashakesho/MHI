@@ -16,8 +16,8 @@ const doctorSchema = new schema({
     required: true,
   },
   specialize: {
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Specializes",
   },
   hospitalID: {
     type: mongoose.Schema.Types.ObjectId,
