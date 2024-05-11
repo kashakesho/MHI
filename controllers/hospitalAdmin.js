@@ -138,13 +138,16 @@ exports.signupDoctor = async (req, res, next) => {
 */
 exports.getdoctors = async (req, res, next) => {
   const hospitalID = req.params.id;
-  const getdoctor = await doctor.find({ hospitalID });
+  const getdoctor = await doctor
+    .find({ hospitalID })
+    .populate({ path: "specialize", select: "name" });
   if (getdoctor) {
     res.json(getdoctor);
+  } else {
+    const error = new Error("doctors not found");
+    error.statusCode = 404;
+    return next(error);
   }
-  const error = new Error("doctors not found");
-  error.statusCode = 404;
-  return next(error);
 };
 /* 
   
