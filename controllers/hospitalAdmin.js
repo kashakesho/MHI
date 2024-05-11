@@ -241,7 +241,7 @@ exports.getClinicsDirectors = async (req, res, next) => {
 };
 
 exports.getSpecializes = async (req, res, next) => {
-  const getAll = specializes.find();
+  const getAll = await specializes.find();
   if (getAll) {
     res.json(getAll);
   }
