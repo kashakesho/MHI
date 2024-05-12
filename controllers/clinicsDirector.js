@@ -57,14 +57,6 @@ exports.setTimeForDoctor = async (req, res, next) => {
 
 
 
-
-
-
-
-
-
-
-
 */
 
 exports.getDoctors = async (req, res, next) => {

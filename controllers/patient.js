@@ -178,13 +178,31 @@ exports.searchHospital = async (req, res, next) => {
 exports.showAvailableDay = async (req, res, next) => {
   const doctorID = req.body.doctorID;
   const getDays = await availableTime.find({ doctorID }).populate({
-    path: "Doctor",
-    select: ["name", "specialize"],
+    path: "doctorID",
+    select: ["name", "specialize", "hospitalID"],
   });
   if (getDays) {
-    res.json({ getDays });
+    const availableDays = [];
+
+    for (let i = 0; i < getDays.length; i++) {
+      const status = getDays[i].status;
+      const Doctor = getDays[i];
+      if (status === "available") {
+        availableDays.push(Doctor);
+      }
+    }
+
+    if (availableDays.length > 0) {
+      const day = availableDays.map((slot) => slot.day);
+      return res.json(day);
+    } else {
+      const error = new Error("No available doctors found");
+      error.statusCode = 404;
+      return next(error);
+    }
   }
-  const error = new Error("doctor not found");
+
+  const error = new Error("Doctor not found");
   error.statusCode = 404;
   return next(error);
 };
