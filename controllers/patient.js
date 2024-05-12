@@ -4,6 +4,8 @@ const hospital = require("../models/hospital");
 const book = require("../models/booking");
 const medicine = require("../models/medicine");
 const availableTime = require("../models/availableTime");
+const patient = require("../models/patient");
+const records = require("../models/treatment_records");
 /* 
 
 
@@ -224,5 +226,50 @@ exports.showAvailableTime = async (req, res, next) => {
     const error = new Error("Doctor not found or no available time slots");
     error.statusCode = 404;
     return next(error);
+  }
+};
+
+exports.getPatientBooks = async (req, res, next) => {
+  const patientID = req.params._id;
+  const getbooks = await book
+    .find({ patientID, status: "Waiting" })
+    .populate("doctorID")
+    .populate("patientID");
+  if (getbooks.length > 0) {
+    res.json(getbooks);
+  } else {
+    const error = new Error(
+      "No books found for this patient with status 'Waiting'"
+    );
+    error.statusCode = 404;
+    next(error);
+  }
+};
+exports.getDoneBooks = async (req, res, next) => {
+  const patientID = req.params._id;
+  const getbooks = await book
+    .find({ patientID, status: "Done" })
+    .populate("doctorID")
+    .populate("patientID");
+  if (getbooks.length > 0) {
+    res.json(getbooks);
+  } else {
+    const error = new Error(
+      "No books found for this patient with status 'Done'"
+    );
+    error.statusCode = 404;
+    next(error);
+  }
+};
+
+exports.getRecords = async (req, res, next) => {
+  const patient = req.params._id;
+  const getRecordsForPatient = await records.find(patient).sort({ date: 1 });
+  if (getRecordsForPatient) {
+    res.json(getRecordsForPatient);
+  } else {
+    const error = new Error("no records found");
+    error.statusCode = 404;
+    next(error);
   }
 };

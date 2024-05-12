@@ -22,4 +22,10 @@ router.post("/getDays", patientController.showAvailableDay);
 
 router.post("/getTime", patientController.showAvailableTime);
 
+router.get("/getWaitingBooks/:id", patientController.getPatientBooks);
+
+router.get("/getDone/:id", patientController.getDoneBooks);
+
+router.get("getRecords/:id", patientController.getRecords);
+
 module.exports = router;
