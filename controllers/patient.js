@@ -234,8 +234,8 @@ exports.getPatientBooks = async (req, res, next) => {
   const getbooks = await book
     .find({ patientID, status: "Waiting" })
     .sort({ day: 1 })
-    .populate("doctorID")
-    .populate("patientID");
+    .populate("doctorID", { select: ["name", "specialize"] })
+    .populate("patientID", { select: "name" });
   if (getbooks.length > 0) {
     res.json(getbooks);
   } else {
@@ -251,8 +251,8 @@ exports.getDoneBooks = async (req, res, next) => {
   const getbooks = await book
     .find({ patientID, status: "Done" })
     .sort({ day: 1 })
-    .populate("doctorID")
-    .populate("patientID");
+    .populate("doctorID", { select: ["name", "specialize"] })
+    .populate("patientID", { select: "name" });
   if (getbooks.length > 0) {
     res.json(getbooks);
   } else {
@@ -266,7 +266,11 @@ exports.getDoneBooks = async (req, res, next) => {
 
 exports.getRecords = async (req, res, next) => {
   const patient = req.params.id;
-  const getRecordsForPatient = await records.find(patient).sort({ date: 1 });
+  const getRecordsForPatient = await records
+    .find(patient)
+    .sort({ date: 1 })
+    .populate("doctor", { select: ["name", "specialize"] })
+    .populate("patient", { select: "name" });
   if (getRecordsForPatient) {
     res.json(getRecordsForPatient);
   } else {
