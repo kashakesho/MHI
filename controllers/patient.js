@@ -230,7 +230,7 @@ exports.showAvailableTime = async (req, res, next) => {
 };
 
 exports.getPatientBooks = async (req, res, next) => {
-  const patientID = req.params._id;
+  const patientID = req.params.id;
   const getbooks = await book
     .find({ patientID, status: "Waiting" })
     .sort({ day: 1 })
@@ -247,7 +247,7 @@ exports.getPatientBooks = async (req, res, next) => {
   }
 };
 exports.getDoneBooks = async (req, res, next) => {
-  const patientID = req.params._id;
+  const patientID = req.params.id;
   const getbooks = await book
     .find({ patientID, status: "Done" })
     .sort({ day: 1 })
@@ -265,7 +265,7 @@ exports.getDoneBooks = async (req, res, next) => {
 };
 
 exports.getRecords = async (req, res, next) => {
-  const patient = req.params._id;
+  const patient = req.params.id;
   const getRecordsForPatient = await records.find(patient).sort({ date: 1 });
   if (getRecordsForPatient) {
     res.json(getRecordsForPatient);
