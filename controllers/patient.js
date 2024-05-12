@@ -233,6 +233,7 @@ exports.getPatientBooks = async (req, res, next) => {
   const patientID = req.params._id;
   const getbooks = await book
     .find({ patientID, status: "Waiting" })
+    .sort({ day: 1 })
     .populate("doctorID")
     .populate("patientID");
   if (getbooks.length > 0) {
@@ -249,6 +250,7 @@ exports.getDoneBooks = async (req, res, next) => {
   const patientID = req.params._id;
   const getbooks = await book
     .find({ patientID, status: "Done" })
+    .sort({ day: 1 })
     .populate("doctorID")
     .populate("patientID");
   if (getbooks.length > 0) {
