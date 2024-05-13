@@ -44,10 +44,13 @@ exports.searchDoctor = async (req, res, next) => {
 
 */
 exports.getDoctors = async (req, res, next) => {
-  const userD = await doctors.find().populate({
-    path: "hospitalID",
-    select: ["name", "address"],
-  });
+  const userD = await doctors
+    .find()
+    .populate({
+      path: "hospitalID",
+      select: ["name", "address"],
+    })
+    .populate({ path: "specialize", select: "name" });
 
   if (userD) {
     return res.json({ userD });
