@@ -15,17 +15,23 @@ exports.searchDoctor = async (req, res, next) => {
   const name = req.body.name;
   const specialize = req.body.specialize;
   if (name) {
-    const search = await doctors.find({ name }).populate({
-      path: "hospitalID",
-      select: ["name", "address"],
-    });
+    const search = await doctors
+      .find({ name })
+      .populate({
+        path: "hospitalID",
+        select: ["name", "address"],
+      })
+      .populate({ path: "specialize", select: "name" });
 
     return res.status(200).json({ search: search });
   } else if (specialize) {
-    const search = await doctors.find({ specialize }).populate({
-      path: "hospitalID",
-      select: ["name", "address"],
-    });
+    const search = await doctors
+      .find({ specialize })
+      .populate({
+        path: "hospitalID",
+        select: ["name", "address"],
+      })
+      .populate({ path: "specialize", select: "name" });
 
     return res.status(200).json({ search: search });
   } else if (!name && !specialize) {
