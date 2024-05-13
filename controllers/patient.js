@@ -165,7 +165,9 @@ exports.searchHospital = async (req, res, next) => {
     error.statusCode = 422;
     return next(error);
   }
-  const searchName = await doctors.find({ hospitalID });
+  const searchName = await doctors
+    .find({ hospitalID })
+    .populate({ path: "specialize", select: "name" });
   if (searchName.length > 0) {
     res.json({ searchName });
   } else {
