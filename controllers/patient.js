@@ -14,30 +14,24 @@ const records = require("../models/treatment_records");
 exports.searchDoctor = async (req, res, next) => {
   const name = req.body.name;
   const specialize = req.body.specialize;
-  if (name) {
-    const search = await doctors
-      .find({ name })
-      .populate({
-        path: "hospitalID",
-        select: ["name", "address"],
-      })
-      .populate({ path: "specialize", select: "name" });
-
-    return res.status(200).json({ search: search });
-  } else if (specialize) {
-    const search = await doctors
-      .find({ specialize })
-      .populate({
-        path: "hospitalID",
-        select: ["name", "address"],
-      })
-      .populate({ path: "specialize", select: "name" });
-
-    return res.status(200).json({ search: search });
-  } else if (!name && !specialize) {
-    const error = new Error("غير موجود");
-    error.statusCode = 404;
-    return next(error);
+  const searchN = await doctors
+    .find({ name })
+    .populate({
+      path: "hospitalID",
+      select: ["name", "address"],
+    })
+    .populate({ path: "specialize", select: "name" });
+  const searchS = await doctors
+    .find({ specialize })
+    .populate({
+      path: "hospitalID",
+      select: ["name", "address"],
+    })
+    .populate({ path: "specialize", select: "name" });
+  if (searchN) {
+    return res.json({ searchN });
+  } else if (searchS) {
+    return res.json({ searchS });
   } else {
     const error = new Error("غير موجود");
     error.statusCode = 404;
