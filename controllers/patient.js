@@ -23,13 +23,7 @@ exports.searchDoctor = async (req, res, next) => {
       })
       .populate({ path: "specialize", select: "name" });
 
-    if (search.length > 0) {
-      return res.json({ search: search });
-    } else {
-      const error = new Error("غير موجود");
-      error.statusCode = 404;
-      return next(error);
-    }
+    return res.json({ search: search });
   } else if (specialize) {
     const search = await doctors
       .find({ specialize })
@@ -38,13 +32,8 @@ exports.searchDoctor = async (req, res, next) => {
         select: ["name", "address"],
       })
       .populate({ path: "specialize", select: "name" });
-    if (search.length > 0) {
-      return res.json({ search: search });
-    } else {
-      const error = new Error("غير موجود");
-      error.statusCode = 404;
-      return next(error);
-    }
+
+    return res.json({ search: search });
   } else {
     const error = new Error("غير موجود");
     error.statusCode = 404;
