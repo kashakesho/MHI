@@ -31,7 +31,7 @@ exports.getRecords = async (req, res, next) => {
     .find()
     .populate({
       path: "patient",
-      select: ["username", "name", "birthday"],
+      select: ["code", "name", "birthday"],
     })
     .populate({
       path: "doctor",
@@ -68,7 +68,7 @@ exports.getBooks = async (req, res, next) => {
     })
     .populate({
       path: "patientID",
-      select: ["username", "name", "birthday"],
+      select: ["code", "name", "birthday"],
     })
     .sort({ time: 1 });
 
