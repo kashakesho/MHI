@@ -26,6 +26,6 @@ router.get("/getWaitingBooks/:id", patientController.getPatientBooks);
 
 router.get("/getDone/:id", patientController.getDoneBooks);
 
-router.get("getRecords/:id", patientController.getRecords);
+router.get("/getRecords/:id", patientController.getRecords);
 
 module.exports = router;

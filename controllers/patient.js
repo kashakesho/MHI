@@ -242,11 +242,11 @@ exports.getPatientBooks = async (req, res, next) => {
     .find({ patientID, status: "Waiting" })
     .sort({ day: 1 })
     .populate({
-      path: "patient",
+      path: "patientID",
       select: ["code", "name", "birthday"],
     })
     .populate({
-      path: "doctor",
+      path: "doctorID",
       select: ["name", "specialize", "code"],
     });
   if (getbooks.length > 0) {
@@ -265,11 +265,11 @@ exports.getDoneBooks = async (req, res, next) => {
     .find({ patientID, status: "Done" })
     .sort({ day: 1 })
     .populate({
-      path: "patient",
+      path: "patientID",
       select: ["code", "name", "birthday"],
     })
     .populate({
-      path: "doctor",
+      path: "doctorID",
       select: ["name", "specialize", "code"],
     });
   if (getbooks.length > 0) {
@@ -286,7 +286,7 @@ exports.getDoneBooks = async (req, res, next) => {
 exports.getRecords = async (req, res, next) => {
   const patient = req.params.id;
   const getRecordsForPatient = await records
-    .find(patient)
+    .find({ patient })
     .sort({ date: 1 })
     .populate({
       path: "patient",
