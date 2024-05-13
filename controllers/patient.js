@@ -28,9 +28,9 @@ exports.searchDoctor = async (req, res, next) => {
       select: ["name", "address"],
     })
     .populate({ path: "specialize", select: "name" });
-  if (searchN) {
+  if (searchN.length > 0) {
     return res.json({ searchN });
-  } else if (searchS) {
+  } else if (searchS.length > 0) {
     return res.json({ searchS });
   } else {
     const error = new Error("غير موجود");
@@ -184,10 +184,7 @@ exports.searchHospital = async (req, res, next) => {
 */
 exports.showAvailableDay = async (req, res, next) => {
   const doctorID = req.body.doctorID;
-  const getDays = await availableTime.find({ doctorID }).populate({
-    path: "doctorID",
-    select: ["name", "specialize", "hospitalID"],
-  });
+  const getDays = await availableTime.find({ doctorID });
   if (getDays) {
     const availableDays = [];
 
