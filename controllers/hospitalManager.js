@@ -1,6 +1,8 @@
 const surgeries = require("../models/requestSurgeries");
 const availableTime = require("../models/availableTime");
 const appointSurgery = require("../models/appointsurgery");
+const specializes = require("../models/specializes");
+const doctors = require("../models/doctor");
 
 exports.appointSurgery = async (req, res, next) => {
   const doctorID = req.body.doctorID;
@@ -58,4 +60,27 @@ exports.getSurgeriesRequests = async (req, res, next) => {
     error.statusCode = 404;
     return next(error);
   }
+};
+
+exports.getSpecializes = async (req, res, next) => {
+  const getSpecializes = specializes.find();
+  if (getSpecializes) {
+    res.json(getSpecializes);
+  }
+
+  const error = new Error("  no specializes found");
+  error.statusCode = 404;
+  return next(error);
+};
+
+exports.getDoctorInHospital = async (req, res, next) => {
+  const hospitalID = req.body.hospitalID;
+  const specialize = req.body.specialize;
+  const doctor = doctors.find({ hospitalID, specialize });
+  if (doctor) {
+    res.json(doctor);
+  }
+  const error = new Error("  no doctors found");
+  error.statusCode = 404;
+  return next(error);
 };

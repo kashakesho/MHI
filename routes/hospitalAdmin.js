@@ -40,4 +40,5 @@ router.delete(
 );
 
 router.get("/getSpecializes", hospitalAdminController.getSpecializes);
+
 module.exports = router;

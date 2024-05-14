@@ -11,6 +11,8 @@ const clinicsDirector = require("../models/clinicsDirector");
 const hospitalAdmin = require("../models/hospitalAdmin");
 const hospitalManager = require("../models/hospitalManager");
 const { v4: uuidv4 } = require("uuid");
+const availableTime = require("../models/availableTime");
+const booking = require("../models/booking");
 
 exports.signupPatient = async (req, res, next) => {
   const username = req.body.username;
@@ -205,6 +207,11 @@ exports.getHospitals = async (req, res, next) => {
   
 */ exports.deleteHospital = async (req, res, next) => {
   const hospitalID = req.body.hospitalID;
+
+  const deleteHM = await hospitalManager.findOneAndDelete({ hospitalID });
+  const deleteA = await hospitalAdmin.findOneAndDelete({ hospitalID });
+  const deleteC = await clinicsDirector.findOneAndDelete({ hospitalID });
+  const deleteD = await doctor.findOneAndDelete({ hospitalID });
   const deleteH = await hospital.findByIdAndDelete({
     _id: hospitalID,
   });
