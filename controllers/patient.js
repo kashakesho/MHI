@@ -247,7 +247,17 @@ exports.getPatientBooks = async (req, res, next) => {
     })
     .populate({
       path: "doctorID",
-      select: ["name", "specialize", "code"],
+      select: ["name", "code"],
+      populate: [
+        {
+          path: "specialize",
+          select: ["name"],
+        },
+        {
+          path: "hospitalID",
+          select: ["name", "address"],
+        },
+      ],
     });
   if (getbooks.length > 0) {
     res.json(getbooks);
@@ -270,7 +280,17 @@ exports.getDoneBooks = async (req, res, next) => {
     })
     .populate({
       path: "doctorID",
-      select: ["name", "specialize", "code"],
+      select: ["name", "code"],
+      populate: [
+        {
+          path: "specialize",
+          select: ["name"],
+        },
+        {
+          path: "hospitalID",
+          select: ["name", "address"],
+        },
+      ],
     });
   if (getbooks.length > 0) {
     res.json(getbooks);
@@ -294,7 +314,17 @@ exports.getRecords = async (req, res, next) => {
     })
     .populate({
       path: "doctor",
-      select: ["name", "specialize", "code"],
+      select: ["name", "code"],
+      populate: [
+        {
+          path: "specialize",
+          select: ["name"],
+        },
+        {
+          path: "hospitalID",
+          select: ["name", "address"],
+        },
+      ],
     });
   if (getRecordsForPatient) {
     res.json(getRecordsForPatient);
