@@ -80,10 +80,11 @@ exports.getDoctorInHospital = async (req, res, next) => {
     hospitalID: hospitalID,
     specialize: specialize,
   });
-  if (doctor) {
+  if (doctor.length > 0) {
     res.json(doctor);
+  } else {
+    const error = new Error("no doctors found");
+    error.statusCode = 404;
+    return next(error);
   }
-  const error = new Error("  no doctors found");
-  error.statusCode = 404;
-  return next(error);
 };
