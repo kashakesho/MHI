@@ -63,7 +63,7 @@ exports.getSurgeriesRequests = async (req, res, next) => {
 };
 
 exports.getSpecializes = async (req, res, next) => {
-  const getSpecializes = specializes.find();
+  const getSpecializes = await specializes.find();
   if (getSpecializes) {
     res.json(getSpecializes);
   }
@@ -76,7 +76,10 @@ exports.getSpecializes = async (req, res, next) => {
 exports.getDoctorInHospital = async (req, res, next) => {
   const hospitalID = req.body.hospitalID;
   const specialize = req.body.specialize;
-  const doctor = doctors.find({ hospitalID, specialize });
+  const doctor = await doctors.find({
+    hospitalID: hospitalID,
+    specialize: specialize,
+  });
   if (doctor) {
     res.json(doctor);
   }

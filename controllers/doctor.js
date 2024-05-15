@@ -8,8 +8,10 @@ const availableTime = require("../models/availableTime");
 exports.setRecord = async (req, res, next) => {
   const { medicine, diagnose, patientID, doctorID } = req.body;
 
-  const patient = await Patients.findById(patientID);
-  const doctor = await Doctors.findById(doctorID);
+  const patient = await Patients.findById({ _id: patientID });
+  console.log(patient);
+  const doctor = await Doctors.findById({ _id: doctorID });
+  console.log(doctor);
 
   if (patient && doctor) {
     const record = await records.create({
