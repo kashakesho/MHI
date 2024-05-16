@@ -62,20 +62,16 @@ exports.setTimeForDoctor = async (req, res, next) => {
 exports.getDoctors = async (req, res, next) => {
   const hospitalID = req.params.id;
   const searchDoctorsInHospital = await Doctor.find({ hospitalID: hospitalID })
-    .populate({
-      path: "patientID",
-      select: ["code", "name", "birthday"],
-    })
-    .populate({
-      path: "doctorID",
-      select: ["name", "code"],
-      populate: [
-        {
-          path: "specialize",
-          select: ["name"],
-        },
-      ],
-    });
+  .populate({
+    path: "doctorID",
+    select: ["name", "code"],
+    populate: [
+      {
+        path: "specialize",
+        select: ["name"],
+      },
+    ],
+  });
   if (searchDoctorsInHospital) {
     res.json({ searchDoctorsInHospital });
   }
