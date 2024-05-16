@@ -98,9 +98,9 @@ exports.signupDoctor = async (req, res, next) => {
   if (!userD && !userP && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
     const name = req.body.name;
-    //const image = req.file.path;
+    const image = req.file.filename;
     const specialize = req.body.specialize;
-    const findSpecialize = specializes.findById({ _id: specialize });
+    const findSpecialize = await specializes.findById({ _id: specialize });
     if (!findSpecialize) {
       const error = new Error("specialize not found");
       error.statusCode = 404;
@@ -118,11 +118,12 @@ exports.signupDoctor = async (req, res, next) => {
         username,
         password,
         name,
-        //  image,
+        image,
         specialize,
         hospitalID,
         code,
       });
+      console.log(newUser);
       return res.status(200).json({ message: "Doctor signup successful" });
     }
   } else {

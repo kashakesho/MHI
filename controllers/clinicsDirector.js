@@ -20,7 +20,7 @@ exports.setTimeForDoctor = async (req, res, next) => {
 
   // Search for available time slots
   const searchForTime = await AvailableTime.find({ day, time });
-  const searchForDay = await availableTime.findOne({ day, time, doctorID });
+  const searchForDay = await availableTime.findOne({ day, doctorID });
   let isDoctorAppointable = true;
   if (searchForDay) {
     const error = new Error("cant appoint doctor in this day");
@@ -61,7 +61,21 @@ exports.setTimeForDoctor = async (req, res, next) => {
 
 exports.getDoctors = async (req, res, next) => {
   const hospitalID = req.params.id;
-  const searchDoctorsInHospital = await Doctor.find({ hospitalID: hospitalID });
+  const searchDoctorsInHospital = await Doctor.find({ hospitalID: hospitalID })
+    .populate({
+      path: "patientID",
+      select: ["code", "name", "birthday"],
+    })
+    .populate({
+      path: "doctorID",
+      select: ["name", "code"],
+      populate: [
+        {
+          path: "specialize",
+          select: ["name"],
+        },
+      ],
+    });
   if (searchDoctorsInHospital) {
     res.json({ searchDoctorsInHospital });
   }

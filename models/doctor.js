@@ -24,8 +24,8 @@ const doctorSchema = new schema({
     ref: "Hospital",
   },
   image: {
-    data: Buffer,
-    contentType: String,
+    type: String,
+    default: "default.jpg",
   },
   role: {
     type: String,
