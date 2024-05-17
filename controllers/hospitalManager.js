@@ -3,6 +3,7 @@ const availableTime = require("../models/availableTime");
 const appointSurgery = require("../models/appointsurgery");
 const specializes = require("../models/specializes");
 const doctors = require("../models/doctor");
+const book = require("../models/booking");
 
 exports.appointSurgery = async (req, res, next) => {
   const doctorID = req.body.doctorID;
@@ -10,15 +11,17 @@ exports.appointSurgery = async (req, res, next) => {
   const day = req.body.day;
   const time = req.body.time;
 
-  const searchSurgery = await availableTime.findOne({ doctorID, day, time });
-
-  if (searchSurgery) {
-    const changeStatus = await availableTime.findOneAndUpdate(
-      { doctorID: doctorID, day: day, time: { $elemMatch: { $eq: time } } },
-      { $set: { status: "not available" } },
-      { new: true }
-    );
-  }
+  const unavailableForDoctor = await availableTime.updateMany(
+    { doctorID, day },
+    { status: "not available" },
+    { multi: true }
+  );
+  console.log(unavailableForDoctor);
+  const cancelAppointments = await book.updateMany(
+    { doctorID, day },
+    { status: "Cancelled" },
+    { multi: true }
+  );
 
   const searchInAppoints = await appointSurgery.findOne({
     doctorID,
@@ -30,7 +33,8 @@ exports.appointSurgery = async (req, res, next) => {
     const error = new Error("Cannot appoint on this day");
     error.statusCode = 422;
     return next(error);
-  } else {
+  }
+  if (doctorID && patientID && day && time) {
     const creation = await appointSurgery.create({
       day,
       time,
@@ -38,6 +42,10 @@ exports.appointSurgery = async (req, res, next) => {
       patientID,
     });
     res.json(creation);
+  } else {
+    const error = new Error("Cannot appoint on this day");
+    error.statusCode = 423;
+    return next(error);
   }
 };
 
