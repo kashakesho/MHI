@@ -32,11 +32,11 @@ exports.getRecords = async (req, res, next) => {
   const userR = await records
     .find()
     .populate({
-      path: "patient",
+      path: "Patient",
       select: ["code", "name", "birthday"],
     })
     .populate({
-      path: "doctor",
+      path: "Doctor",
       select: ["name", "specialize", "hospitalID"],
     })
     .sort({ date: 1 });
@@ -145,12 +145,22 @@ exports.getPatientRecords = async (req, res, next) => {
   const userR = await records
     .find({ patient })
     .populate({
-      path: "patient",
+      path: "Patient",
       select: ["username", "name", "birthday"],
     })
     .populate({
-      path: "doctor",
-      select: ["name", "specialize", "hospitalID"],
+      path: "Doctor",
+      select: ["name"],
+      populate: [
+        {
+          path: "specialize",
+          select: ["name"],
+        },
+        {
+          path: "hospitalID",
+          select: ["name", "address"],
+        },
+      ],
     });
 
   if (userR) {
@@ -197,11 +207,11 @@ exports.getAppointedSurgeries = async (req, res, next) => {
   const getsurgeries = await appointedSurgeries
     .find({ doctorID })
     .populate({
-      path: "patient",
+      path: "patientID",
       select: ["username", "name", "birthday"],
     })
     .populate({
-      path: "doctor",
+      path: "doctorID",
       select: ["name", "specialize", "hospitalID"],
     });
   if (getsurgeries.length > 0) {
