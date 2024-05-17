@@ -98,7 +98,11 @@ exports.signupDoctor = async (req, res, next) => {
   if (!userD && !userP && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
     const name = req.body.name;
-    const image = req.file.filename;
+    let image;
+    if (req.file) {
+      image = req.file.filename;
+    }
+
     const specialize = req.body.specialize;
     const findSpecialize = await specializes.findById({ _id: specialize });
     if (!findSpecialize) {
@@ -113,17 +117,30 @@ exports.signupDoctor = async (req, res, next) => {
     const code = prefix + uniqueId;
     if (H) {
       password = await bcrypt.hash(password, 10);
-
-      const newUser = await doctor.create({
-        username,
-        password,
-        name,
-        image,
-        specialize,
-        hospitalID,
-        code,
-      });
-      return res.status(200).json({ message: "Doctor signup successful" });
+      if (!image) {
+        image = "default.jpg";
+        const newUser = await doctor.create({
+          username,
+          password,
+          name,
+          image,
+          specialize,
+          hospitalID,
+          code,
+        });
+        return res.status(200).json({ message: "Doctor signup successful" });
+      } else {
+        const newUser = await doctor.create({
+          username,
+          password,
+          name,
+          image,
+          specialize,
+          hospitalID,
+          code,
+        });
+        return res.status(200).json({ message: "Doctor signup successful" });
+      }
     }
   } else {
     const error = new Error("لا يمكن ادخال اسم المستخدم");
