@@ -123,7 +123,6 @@ exports.signupDoctor = async (req, res, next) => {
         hospitalID,
         code,
       });
-      console.log(newUser);
       return res.status(200).json({ message: "Doctor signup successful" });
     }
   } else {
