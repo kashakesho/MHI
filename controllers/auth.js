@@ -26,13 +26,17 @@ exports.signupPatient = async (req, res, next) => {
 
   if (!userD && !userP && !userA && !userC && !userHa && !userHm) {
     let password = req.body.password;
+    let confirmPassword = req.body.confirmPassword;
+    if (password != confirmPassword) {
+      const error = new Error("password mismatch");
+      error.statusCode = 422;
+      return next(error);
+    }
     const name = req.body.name;
-    const address = req.body.address;
     const birthday = req.body.birthday;
     const prefix = "PT-";
     const uniqueId = uuidv4().substr(0, 6);
     const code = prefix + uniqueId;
-    const mobileNumber = req.body.mobileNumber;
 
     password = await bcrypt.hash(password, 10);
 
@@ -40,10 +44,8 @@ exports.signupPatient = async (req, res, next) => {
       username,
       password,
       name,
-      address,
       birthday,
       code,
-      mobileNumber,
     });
     return res.status(200).json({ message: "Patient signup successful" });
   }

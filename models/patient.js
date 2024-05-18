@@ -17,7 +17,7 @@ const patientSchema = new schema({
   },
   address: {
     type: String,
-    required: true,
+    required: false,
   },
   birthday: {
     type: Date,
@@ -34,7 +34,7 @@ const patientSchema = new schema({
   },
   mobileNumber: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 
