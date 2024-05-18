@@ -391,6 +391,17 @@ exports.addToProfile = async (req, res, next) => {
     res.json({ Message: "updated Successfuly" });
   } else {
     const error = new Error("couldnt update this profile");
+    error.statusCode = 424;
+    next(error);
+  }
+};
+exports.getProfile = async (req, res, next) => {
+  const patientID = req.params.id;
+  const getProfile = await patient.findById({ _id: patientID });
+  if (getProfile) {
+    res.json(getProfile);
+  } else {
+    const error = new Error("couldnt find this profile");
     error.statusCode = 404;
     next(error);
   }

@@ -1,6 +1,7 @@
 const express = require("express");
 
 const patientController = require("../controllers/patient");
+const { route } = require("./auth");
 
 const router = express.Router();
 
@@ -29,5 +30,7 @@ router.get("/getDone/:id", patientController.getDoneBooks);
 router.get("/getRecords/:id", patientController.getRecords);
 
 router.patch("/updateProfile", patientController.addToProfile);
+
+router.get("/getProfile/:id", patientController.getProfile);
 
 module.exports = router;
