@@ -334,3 +334,64 @@ exports.getRecords = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.addToProfile = async (req, res, next) => {
+  const patientID = req.body.patientID;
+  const height = req.body.height;
+  if (height) {
+    const addheight = await patient.findOneAndUpdate(
+      { _id: patientID },
+      {
+        height: height,
+      },
+      { new: true }
+    );
+  }
+  const weight = req.body.weight;
+  if (weight) {
+    const addweight = await patient.findOneAndUpdate(
+      { _id: patientID },
+      {
+        weight: weight,
+      },
+      { new: true }
+    );
+  }
+  const mobileNumber = req.body.mobileNumber;
+  if (mobileNumber) {
+    const addNumber = await patient.findOneAndUpdate(
+      { _id: patientID },
+      {
+        mobileNumber: mobileNumber,
+      },
+      { new: true }
+    );
+  }
+  const bloodType = req.body.bloodType;
+  if (bloodType) {
+    const addBloodType = await patient.findOneAndUpdate(
+      { _id: patientID },
+      {
+        bloodType: bloodType,
+      },
+      { new: true }
+    );
+  }
+  const address = req.body.address;
+  if (address) {
+    const addAddress = await patient.findOneAndUpdate(
+      { _id: patientID },
+      {
+        address: address,
+      },
+      { new: true }
+    );
+  }
+  if (patientID) {
+    res.json({ Message: "updated Successfuly" });
+  } else {
+    const error = new Error("couldnt update this profile");
+    error.statusCode = 404;
+    next(error);
+  }
+};

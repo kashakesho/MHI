@@ -36,6 +36,19 @@ const patientSchema = new schema({
     type: String,
     required: false,
   },
+  height: {
+    type: String,
+    required: false,
+  },
+  weight: {
+    type: String,
+    required: false,
+  },
+  bloodType: {
+    type: String,
+    enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+    required: false,
+  },
 });
 
 module.exports = mongoose.model("Patient", patientSchema);

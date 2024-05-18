@@ -28,4 +28,6 @@ router.get("/getDone/:id", patientController.getDoneBooks);
 
 router.get("/getRecords/:id", patientController.getRecords);
 
+router.patch("/updateProfile", patientController.addToProfile);
+
 module.exports = router;
