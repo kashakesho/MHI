@@ -211,28 +211,28 @@ exports.getHospitals = async (req, res, next) => {
   const getHM = await hospitalManager.find({ hospitalID });
   if (getHM.length > 0) {
     for (let i = 0; i < getHM.length; i++) {
-      let manager = deleteHM[i]._id;
+      let manager = getHM[i]._id;
       let deleteHM = hospitalManager.findByIdAndDelete(manager);
     }
   }
   const getA = await hospitalAdmin.find({ hospitalID });
   if (getA.length > 0) {
-    for (let i = 0; i < getHM.length; i++) {
-      let manager = deleteHM[i]._id;
+    for (let i = 0; i < getA.length; i++) {
+      let manager = getA[i]._id;
       let deleteA = hospitalManager.findByIdAndDelete(manager);
     }
   }
   const getC = await clinicsDirector.find({ hospitalID });
   if (getC.length > 0) {
-    for (let i = 0; i < getHM.length; i++) {
-      let manager = deleteHM[i]._id;
+    for (let i = 0; i < getC.length; i++) {
+      let manager = getC[i]._id;
       let deleteC = hospitalManager.findByIdAndDelete(manager);
     }
   }
   const getD = await doctor.find({ hospitalID });
   if (getD.length > 0) {
-    for (let i = 0; i < getHM.length; i++) {
-      let manager = deleteHM[i]._id;
+    for (let i = 0; i < getD.length; i++) {
+      let manager = getD[i]._id;
       let deleteD = hospitalManager.findByIdAndDelete(manager);
     }
   }
