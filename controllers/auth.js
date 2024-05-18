@@ -208,35 +208,23 @@ exports.getHospitals = async (req, res, next) => {
 */ exports.deleteHospital = async (req, res, next) => {
   const hospitalID = req.body.hospitalID;
 
-  const getHM = await hospitalManager.find({ hospitalID });
+  await hospitalManager.deleteMany({ hospitalID });
 
-  for (const manager of getHM) {
-    await hospitalManager.findByIdAndDelete(manager._id);
-  }
-  const getA = await hospitalAdmin.find({ hospitalID });
+  await hospitalAdmin.deleteMany({ hospitalID });
 
-  for (const manager of getA) {
-    await hospitalAdmin.findByIdAndDelete(manager._id);
-  }
-  const getD = await doctor.find({ hospitalID });
+  await doctor.deleteMany({ hospitalID });
 
-  for (const doctor of getD) {
-    await doctor.findByIdAndDelete(doctor._id);
-  }
-  const getC = await clinicsDirector.find({ hospitalID });
+  await clinicsDirector.deleteMany({ hospitalID });
 
-  for (const director of getC) {
-    await clinicsDirector.findByIdAndDelete(director._id);
-  }
-  const deleteH = await hospital.findByIdAndDelete({
-    _id: hospitalID,
-  });
+  const deleteH = await hospital.findByIdAndDelete(hospitalID);
+
   if (deleteH) {
-    res.json({ message: "deleted sucessfully" });
+    return res.json({ message: "Deleted successfully" });
+  } else {
+    const error = new Error("no hospital found");
+    error.statusCode = 422;
+    return next(error);
   }
-  const error = new Error("Hospital not found");
-  error.statusCode = 404;
-  return next(error);
 };
 /* 
 
