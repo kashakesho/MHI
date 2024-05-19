@@ -397,11 +397,13 @@ exports.addToProfile = async (req, res, next) => {
 };
 exports.getProfile = async (req, res, next) => {
   const patientID = req.params.id;
+  const currentDate = new Date();
   const getProfile = await patient.findById({ _id: patientID });
+  const age = currentDate.getFullYear() - getProfile.birthday.getFullYear();
   if (getProfile) {
-    res.json(getProfile);
+    res.json({ getProfile, age });
   } else {
-    const error = new Error("couldnt find this profile");
+    const error = new Error("Could not find this profile");
     error.statusCode = 404;
     next(error);
   }
