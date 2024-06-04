@@ -8,8 +8,6 @@ const router = express.Router();
 
 router.post("/createRecord", doctorController.setRecord);
 
-router.get("/showRecords", doctorController.getRecords);
-
 router.get("/showBooking/:id", doctorController.getBooks);
 
 router.get("/countBooks/:id", doctorController.bookCounter);

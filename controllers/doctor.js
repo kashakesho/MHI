@@ -28,27 +28,6 @@ exports.setRecord = async (req, res, next) => {
     return next(error);
   }
 };
-exports.getRecords = async (req, res, next) => {
-  const userR = await records
-    .find()
-    .populate({
-      path: "Patient",
-      select: ["code", "name", "birthday"],
-    })
-    .populate({
-      path: "Doctor",
-      select: ["name", "specialize", "hospitalID"],
-    })
-    .sort({ date: 1 });
-
-  if (userR) {
-    return res.json({ userR });
-  }
-
-  const error = new Error(" المريض غير موجود");
-  error.statusCode = 404;
-  return next(error);
-};
 
 exports.getBooks = async (req, res, next) => {
   const doctor = req.params.id;
@@ -144,13 +123,14 @@ exports.getPatientRecords = async (req, res, next) => {
   const patient = req.params.id;
   const userR = await records
     .find({ patient })
+    .sort({ date: 1 })
     .populate({
-      path: "Patient",
-      select: ["username", "name", "birthday"],
+      path: "patient",
+      select: ["code", "name", "birthday"],
     })
     .populate({
-      path: "Doctor",
-      select: ["name"],
+      path: "doctor",
+      select: ["name", "code"],
       populate: [
         {
           path: "specialize",
