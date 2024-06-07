@@ -184,8 +184,14 @@ exports.requestSurgery = async (req, res, next) => {
 };
 exports.getAppointedSurgeries = async (req, res, next) => {
   const doctorID = req.params.id;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const getsurgeries = await appointedSurgeries
-    .find({ doctorID })
+    .find({
+      doctorID,
+      appointmentDate: { $gte: today },
+    })
     .populate({
       path: "patientID",
       select: ["username", "name", "birthday"],
