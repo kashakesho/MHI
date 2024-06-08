@@ -59,7 +59,17 @@ exports.getSurgeriesRequests = async (req, res, next) => {
     })
     .populate({
       path: "doctor",
-      select: ["name", "specialize", "hospitalID"],
+      select: ["name", "code"],
+      populate: [
+        {
+          path: "specialize",
+          select: ["name"],
+        },
+        {
+          path: "hospitalID",
+          select: ["name", "address"],
+        },
+      ],
     });
   if (getsurgeries) {
     res.json(getsurgeries);
