@@ -42,7 +42,7 @@ exports.appointSurgery = async (req, res, next) => {
       doctorID,
       patientID,
     });
-    const deletee = surgeries.findByIdAndDelete({ _id: surgeryID });
+    const deletee = await surgeries.findByIdAndDelete({ _id: surgeryID });
     res.json(creation);
   } else {
     const error = new Error("Cannot appoint on this day");
