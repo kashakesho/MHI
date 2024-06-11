@@ -10,6 +10,7 @@ exports.appointSurgery = async (req, res, next) => {
   const patientID = req.body.patientID;
   const day = req.body.day;
   const time = req.body.time;
+  const surgeryID = req.body.surgeryID;
 
   const unavailableForDoctor = await availableTime.updateMany(
     { doctorID, day },
@@ -41,6 +42,7 @@ exports.appointSurgery = async (req, res, next) => {
       doctorID,
       patientID,
     });
+    const deletee = surgeries.deleteOne({ _id: surgeryID });
     res.json(creation);
   } else {
     const error = new Error("Cannot appoint on this day");

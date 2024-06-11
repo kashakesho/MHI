@@ -190,6 +190,8 @@ exports.signupHospital = async (req, res, next) => {
 
 
 
+
+
 */
 
 exports.getHospitals = async (req, res, next) => {
