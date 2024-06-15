@@ -8,15 +8,18 @@ const recordSchema = new schema({
     type: Date,
     default: Date.now,
   },
-
-  medicine: {
-    type: String,
-    required: true,
-  },
-  diagnose: {
-    type: String,
-    required: true,
-  },
+  diagnose: [
+    {
+      medicine: {
+        type: String,
+        required: true,
+      },
+      description: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   doctor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",

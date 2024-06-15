@@ -6,16 +6,15 @@ const surgeries = require("../models/requestSurgeries");
 const appointedSurgeries = require("../models/appointsurgery");
 const availableTime = require("../models/availableTime");
 exports.setRecord = async (req, res, next) => {
-  const { medicine, diagnose, patientID, doctorID } = req.body;
+  const patientID = req.body.patientID;
+  const doctorID = req.body.doctorID;
+  const diagnose = req.body.diagnose;
 
   const patient = await Patients.findById({ _id: patientID });
-  console.log(patient);
   const doctor = await Doctors.findById({ _id: doctorID });
-  console.log(doctor);
 
   if (patient && doctor) {
     const record = await records.create({
-      medicine,
       diagnose,
       patient,
       doctor,
