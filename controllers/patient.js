@@ -183,37 +183,39 @@ exports.searchHospital = async (req, res, next) => {
 
 
 
-*/
-exports.showAvailableDay = async (req, res, next) => {
+*/ exports.showAvailableDay = async (req, res, next) => {
   const doctorID = req.body.doctorID;
+
+  // Find available time slots for the specified doctor and populate related fields
   const getDays = await availableTime.find({ doctorID }).populate({
     path: "doctorID",
     select: ["name", "specialize", "hospitalID"],
   });
-  if (getDays) {
-    const availableDays = [];
 
-    for (let i = 0; i < getDays.length; i++) {
-      const status = getDays[i].status;
-      const Doctor = getDays[i];
-      if (status === "available") {
-        availableDays.push(Doctor);
-      }
-    }
-
-    if (availableDays.length > 0) {
-      const day = availableDays.map((slot) => slot.day);
-      return res.json(day);
-    } else {
-      const error = new Error("No available doctors found");
-      error.statusCode = 404;
-      return next(error);
-    }
+  // Check if any time slots were found
+  if (!getDays || getDays.length === 0) {
+    const error = new Error("Doctor not found or no available time slots");
+    error.statusCode = 404;
+    throw error;
   }
 
-  const error = new Error("Doctor not found");
-  error.statusCode = 404;
-  return next(error);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Filter for available time slots from today onwards
+  const availableDays = getDays.filter(
+    (day) => day.status === "available" && new Date(day.day) >= today
+  );
+
+  // Check if any available days were found
+  if (availableDays.length === 0) {
+    const error = new Error("No available doctors found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const days = availableDays.map((slot) => slot.day);
+  return res.json(days);
 };
 /*
 
