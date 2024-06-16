@@ -16,6 +16,14 @@ const booking = require("../models/booking");
 
 exports.signupPatient = async (req, res, next) => {
   const username = req.body.username;
+  const usernameRegex = /^[a-zA-Z0-9_]+$/; // Adjust the regex pattern as necessary
+
+  // Validate the username against the regex pattern
+  if (!usernameRegex.test(username)) {
+    const error = new Error("cant use this username");
+    error.statusCode = 400;
+    return next(error);
+  }
 
   const userD = await doctor.findOne({ username });
   const userP = await patient.findOne({ username });
