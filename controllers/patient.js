@@ -82,7 +82,8 @@ exports.appoint = async (req, res, next) => {
   const patient = await patients.findById({ _id: patientID });
 
   if (doctor && patient) {
-    const searchDay = await book.findOne({ day, doctorID, patientID });
+    const searchDay = await book.findOne({ day, patientID });
+
     if (searchDay) {
       const error = new Error("cant book patient this day");
       error.statusCode = 422;
