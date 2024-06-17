@@ -214,7 +214,7 @@ exports.searchHospital = async (req, res, next) => {
   if (availableDays.length === 0) {
     const error = new Error("No available doctors found");
     error.statusCode = 404;
-    throw error;
+    return next(error);
   }
 
   const days = availableDays.map((slot) => slot.day);
