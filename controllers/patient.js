@@ -199,7 +199,7 @@ exports.searchHospital = async (req, res, next) => {
   if (!getDays || getDays.length === 0) {
     const error = new Error("Doctor not found or no available time slots");
     error.statusCode = 404;
-    throw error;
+    return next(error);
   }
 
   const today = new Date();
