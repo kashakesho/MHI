@@ -189,7 +189,7 @@ exports.getAppointedSurgeries = async (req, res, next) => {
   const getsurgeries = await appointedSurgeries
     .find({
       doctorID,
-      appointmentDate: { $gte: today },
+      day: { $gte: today },
     })
     .populate({
       path: "patientID",
