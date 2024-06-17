@@ -187,10 +187,12 @@ exports.searchHospital = async (req, res, next) => {
   const doctorID = req.body.doctorID;
 
   // Find available time slots for the specified doctor and populate related fields
-  const getDays = await availableTime.find({ doctorID }).populate({
-    path: "doctorID",
-    select: ["name", "specialize", "hospitalID"],
-  });
+  const getDays = await availableTime
+    .find({ doctorID, status: "available" })
+    .populate({
+      path: "doctorID",
+      select: ["name", "specialize", "hospitalID"],
+    });
 
   // Check if any time slots were found
   if (!getDays || getDays.length === 0) {
