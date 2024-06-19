@@ -190,7 +190,7 @@ exports.signupHospital = async (req, res, next) => {
     return res.status(200).json({ message: "Hospital signup successful" });
   }
 
-  const error = new Error("لا يمكن ادخال اسم المستخدم");
+  const error = new Error("can not create this hospital");
   error.statusCode = 400;
   return next(error);
 }; /* 

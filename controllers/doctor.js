@@ -5,11 +5,11 @@ const Doctors = require("../models/doctor");
 const surgeries = require("../models/requestSurgeries");
 const appointedSurgeries = require("../models/appointsurgery");
 const availableTime = require("../models/availableTime");
+
 exports.setRecord = async (req, res, next) => {
   const patientID = req.body.patientID;
   const doctorID = req.body.doctorID;
   const diagnose = req.body.diagnose;
-
   const patient = await Patients.findById({ _id: patientID });
   const doctor = await Doctors.findById({ _id: doctorID });
 
@@ -150,6 +150,7 @@ exports.getPatientRecords = async (req, res, next) => {
   error.statusCode = 404;
   return next(error);
 };
+
 exports.requestSurgery = async (req, res, next) => {
   const doctor = req.body.doctor;
   if (!doctor) {
@@ -211,8 +212,6 @@ exports.cancelDay = async (req, res, next) => {
   const day = req.body.day;
   const doctorID = req.body.doctorID;
   const findDay = await availableTime.findOne({ day, doctorID });
-
-  let changeStatus; // Declare changeStatus outside of the if block
 
   if (findDay) {
     changeStatus = await availableTime.findOneAndUpdate(

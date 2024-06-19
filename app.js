@@ -4,8 +4,6 @@ const cors = require("cors");
 
 const mongoose = require("mongoose");
 
-const multer = require("multer");
-
 const authRoute = require("./routes/auth");
 
 const patientRoute = require("./routes/patient");

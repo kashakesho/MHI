@@ -86,9 +86,13 @@ exports.appoint = async (req, res, next) => {
 
     const searchTime = await book.findOne({ day, patientID, time });
 
-    if (searchDay || searchTime) {
+    if (searchDay) {
       const error = new Error("cant book patient this day");
       error.statusCode = 422;
+      return next(error);
+    } else if (searchTime) {
+      const error = new Error("you have appointment in this hour");
+      error.statusCode = 420;
       return next(error);
     } else {
       const D = await book.findOne({ doctorID, day, time });

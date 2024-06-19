@@ -14,7 +14,6 @@ exports.setTimeForDoctor = async (req, res, next) => {
   const searchDoctorResult = await Doctor.findById(doctorID);
   const searchSpecialize = searchDoctorResult.specialize;
   const searchHospital = searchDoctorResult.hospitalID.toString();
-
   const day = req.body.day;
   const time = req.body.time;
 
