@@ -54,12 +54,14 @@ app.use((error, req, res, next) => {
   res.status(status).json({ message: message });
 });
 
+const port = process.env.PORT || 3000;
+
 mongoose
   .connect(
     "mongodb+srv://MHIproject:MHIproject@learn-mongo-db.hkturjx.mongodb.net/MHI?retryWrites=true"
   )
   .then(() => {
-    app.listen(3000);
+    app.listen(port, "0.0.0.0");
   })
   .catch((err) => {
     console.log(err);
