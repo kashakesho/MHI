@@ -56,6 +56,7 @@ app.use((error, req, res, next) => {
 
 const port = process.env.PORT || 3000;
 
+console.log("sh8aal");
 mongoose
   .connect(
     "mongodb+srv://MHIproject:MHIproject@learn-mongo-db.hkturjx.mongodb.net/MHI?retryWrites=true"
