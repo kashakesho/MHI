@@ -121,11 +121,11 @@ exports.getMedicines = async (req, res, next) => {
   const findMedicines = await medicine.find();
   if (findMedicines) {
     res.json({ findMedicines });
+  } else {
+    const error = new Error("not found");
+    error.statusCode = 404;
+    return next(error);
   }
-
-  const error = new Error("not found");
-  error.statusCode = 404;
-  return next(error);
 };
 /* 
 
@@ -157,10 +157,11 @@ exports.getHospitals = async (req, res, next) => {
   const findHospitals = await hospital.find();
   if (findHospitals) {
     res.json({ findHospitals });
+  } else {
+    const error = new Error("not found");
+    error.statusCode = 404;
+    return next(error);
   }
-  const error = new Error("not found");
-  error.statusCode = 404;
-  return next(error);
 };
 /* 
 
