@@ -19,9 +19,11 @@ const hospitalManagerRoute = require("./routes/hospitalManager");
 const path = require("path");
 
 const app = express();
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use(express.static(path.join(__dirname, "uploads")));
-
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 app.use(cors());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
